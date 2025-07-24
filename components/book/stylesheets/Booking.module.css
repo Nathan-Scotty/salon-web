@@ -1,0 +1,78 @@
+.bookingWrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+}
+
+.bookingTeaser {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 420px;
+    width: 90%;
+    color: white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.bookingTeaser h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.bookingTeaser label {
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.bookingTeaser input,
+.bookingTeaser select {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.85);
+    color: #333;
+}
+
+.bookingTeaser input::placeholder {
+    color: #888;
+}
+
+.bookingTeaser button {
+    padding: 14px;
+    background-color: #04AA6D;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.bookingTeaser button:hover {
+    background-color: #038e5c;
+}
+
+.statusMessage {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #fff;
+}
+
+@media (max-width: 500px) {
+    .bookingTeaser {
+        padding: 2rem;
+        margin: 0 20px;
+    }
+}

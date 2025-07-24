@@ -1,0 +1,94 @@
+.form {
+    max-width: 500px;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form .container {
+    padding: 24px;
+    background-color: #fafafa;
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"] {
+    width: 100%;
+    padding: 14px 6px;
+    margin: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border 0.3s ease;
+}
+
+.form input[type="text"]:focus,
+.form input[type="email"]:focus,
+.form input[type="password"]:focus {
+    border-color: #04AA6D;
+    outline: none;
+}
+
+.form button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.form button:hover {
+    background-color: #039f64;
+}
+
+.form .cancelbtn {
+    background-color: #f44336;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.imgcontainer {
+    text-align: center;
+    padding: 24px;
+    background: #f0f0f0;
+}
+
+.avatar {
+    width: 150px;
+    height: auto;
+    border-radius: 50%;
+    border: 3px solid #04AA6D;
+}
+
+.form span.psw {
+    display: block;
+    margin-top: 16px;
+    text-align: right;
+    font-size: 14px;
+    color: #555;
+}
+
+@media screen and (max-width: 480px) {
+    .form {
+        margin: 20px;
+    }
+
+    .form span.psw {
+        text-align: center;
+    }
+
+    .form .cancelbtn {
+        width: 100%;
+    }
+}

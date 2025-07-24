@@ -1,0 +1,100 @@
+/* Luxury Hair Salon Footer Styling */
+
+.footer {
+    background-color: #1a1a1a;
+    height: 100%;
+    color: #e5c79c;
+    padding: 80px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    font-family: inherit;
+}
+
+.logo_container{
+    cursor: pointer;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+.footer_links ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer_links li {
+    margin-bottom: 10px;
+}
+
+.footer_links .footer_useful {
+    color: #e5c79c;
+    text-decoration: none;
+}
+
+.footer_links .footer_useful:hover {
+    color: #c49a5b;
+}
+
+.footer_contacts h1,
+.footer_subscribe h1,
+.footer_links h1 {
+    font-size: 18px;
+    font-family: inherit;
+    margin-bottom: 25px;
+    color: #c49a5b;
+}
+
+.footer_subscribe form {
+    display: flex;
+    flex-direction: column;
+    font-family: inherit;
+}
+
+.footer_subscribe input[type="email"] {
+    width: 220px;
+    height: 45px;
+    margin-bottom: 20px;
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #c49a5b;
+    background-color: transparent;
+    color: #e5c79c;
+}
+
+.footer_subscribe button {
+    background-color: #c49a5b;
+    font-weight: 700;
+    width: 160px;
+    height: 50px;
+    color: #1a1a1a;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.footer_subscribe button:hover {
+    background-color: #e5c79c;
+    color: #1a1a1a;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+    border-top: 1px solid #777;
+    font-size: 14px;
+    color: #777;
+}
+
+@media screen and (max-width: 768px) {
+
+    .footer {
+        display: flex;
+        flex-direction: column;
+        padding: 80px;
+    }
+}

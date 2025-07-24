@@ -1,0 +1,83 @@
+.containers {
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../public/hairSalon.jpg);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.contents {
+    color: white;
+    text-align: center;
+    z-index: 1;
+}
+
+.title {
+    font-size: 4rem;
+    margin: 0;
+}
+
+.description {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+.ctaButton {
+    background-color: #d9a760;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .ctaButton:hover {
+    background-color: #b3854e;
+  }
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Media queries pour petits écrans */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .description {
+        font-size: 1rem;
+    }
+
+    .containers {
+        flex-direction: column;
+        padding: 1rem; 
+    }
+
+    .contents {
+        padding: 1rem;
+    }
+}

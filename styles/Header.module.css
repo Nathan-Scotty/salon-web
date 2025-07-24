@@ -1,0 +1,167 @@
+/* Luxury Hair Salon Styling */
+
+.navbar {
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 9999;
+    transition: background-color 0.5s;
+}
+
+.scrolled {
+    background-color: #1a1a1a;
+    animation: fadeInDown 0.9s ease-in;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.navbar.scrolled {
+    background-color: #1a1a1a;
+    z-index: 9999;
+}
+
+.logo_container {
+    cursor: pointer;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+.menu_icon {
+    display: none;
+}
+
+.open {
+    display: none;
+}
+
+.navbar .navbar_link {
+    float: left;
+    display: block;
+    color: #e5c79c;
+    text-align: center;
+    padding: 26px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.5s;
+}
+
+.navbar.scrolled .navbar_link {
+    color: #e5c79c;
+}
+
+.navbar.scrolled .dropbtn {
+    color: #e5c79c;
+}
+
+.navbar .navbar_link:hover {
+    color: #c49a5b;
+}
+
+.navbar_link.active {
+    border-bottom: 2px solid #c49a5b;
+    color: #c49a5b;
+}
+
+.label {
+    color: #e5c79c;
+}
+
+.label select {
+    margin-left: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.aboutPage,
+.contactPage,
+.faqsPage,
+.services,
+.projects,
+.booking {
+    background-color: #1a1a1a;
+}
+
+@media screen and (min-width: 769px) {
+    .dropdown:hover .dropdown_content {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        background-color: transparent;
+    }
+
+    .navbar_links {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        width: 100%;
+        padding: 15px;
+        background-color: #1f1f1f;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        z-index: 0;
+    }
+
+    .navbar .navbar_link {
+        display: flex;
+        text-align: left;
+        padding: 15px 0;
+        padding-left: 15px;
+        color: #e5c79c;
+    }
+
+    .navbar_link.active {
+        color: #c49a5b;
+    }
+
+    .menu_icon {
+        display: block;
+        cursor: pointer;
+        color: #c49a5b;
+        font-size: 24px;
+        padding: 20px;
+        transition: color 0.3s, transform 0.3s;
+        position: relative;
+        z-index: 1;
+    }
+
+    .open {
+        color: #c49a5b;
+        transform: rotate(90deg);
+    }
+
+    .navbar_links {
+        display: none;
+    }
+
+    .show {
+        display: flex;
+        flex-direction: column;
+        margin-top: 70px;
+        margin-left: 5%;
+        width: 83%;
+    }
+}

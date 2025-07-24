@@ -1,0 +1,114 @@
+.experience {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.experience h2 {
+    color: #fdc345;
+    font-weight: 400;
+    font-family: 'Pacifico', cursive;
+    font-size: 19px;
+}
+
+.experience h3 {
+    font-size: 30px;
+    font-family: 'Pacifico', cursive;
+}
+
+.experts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.expert {
+    position: relative;
+    padding: 15px;
+    text-align: center;
+    transition: transform 2s;
+}
+
+.expert:hover {
+    transform: translateY(-10px);
+}
+
+.expert .image {
+    width: 230px;
+    height: 290px;
+    object-fit: cover;
+    border-radius: 5%;
+}
+
+.expert .name {
+    font-weight: 700;
+    font-family: 'Pacifico', cursive;
+    font-size: 19px;
+}
+
+.expert .title {
+    font-size: 17.5px;
+    color: #474646;
+}
+
+.expert .contact {
+    color: #939292;
+}
+
+.expert p {
+    margin: 5px 0;
+}
+
+.socialIcons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    gap: 5px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.socialIcons a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    color: #f0c14b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.expert:hover .socialIcons {
+    opacity: 1;
+}
+
+.testimonial .title {
+    color: #fdc345;
+    font-family: 'Pacifico', cursive;
+}
+
+.slider {
+    padding-top: 60px;
+    background-color: #fcf3e9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider h2 {
+    color: #fdc345;
+    font-weight: 400;
+    font-family: 'Pacifico', cursive;
+    font-size: 19px;
+}
+
+.slider h4 {
+    font-size: 30px;
+    font-family: 'Pacifico', cursive;
+}

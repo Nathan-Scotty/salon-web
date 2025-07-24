@@ -1,0 +1,47 @@
+/* Luxury Hair Salon Styling */
+
+.header {
+    background-color: #1a1a1a;
+    color: #e5c79c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 107px;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.header h1 {
+    font-family: inherit;
+    font-size: 32px;
+    letter-spacing: 2px;
+}
+
+.links {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 80px;
+}
+
+.link {
+    text-decoration: none;
+    color: #e5c79c;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.link:hover {
+    color: #c49a5b;
+}
+
+.booking {
+    color: #c49a5b;
+    font-weight: 700;
+}
+
+.booking::before {
+    content: '/ ';
+    color: #e5c79c;
+}
