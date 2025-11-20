@@ -70,5 +70,14 @@
     "services.styles.title": "Styles tendances et classiques",
     "services.styles.text": "Anticipez les tendances ou optez pour une élégance intemporelle.",
     "services.experience.title": "Expérience relaxante en salon",
-    "services.experience.text": "Profitez d'une atmosphère apaisante avec un service personnalisé."
+    "services.experience.text": "Profitez d'une atmosphère apaisante avec un service personnalisé.",
+    "title": "Partagez votre expérience avec nous",
+    "subtitle": "Nous serions ravis d’avoir votre retour sur votre visite !",
+    "starPlaceholder": "Cliquez sur une étoile",
+    "namePlaceholder": "Votre prénom",
+    "commentPlaceholder": "Racontez-nous votre expérience… (facultatif mais tellement apprécié ♥)",
+    "submitButton": "Envoyer mon avis",
+    "sending": "Envoi en cours…",
+    "success": "Merci infiniment pour votre avis ! Il apparaîtra très bientôt.",
+    "error": "Une erreur est survenue. Veuillez réessayer."
 }

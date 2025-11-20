@@ -70,5 +70,14 @@
     "services.styles.title": "Trendy & Classic Styles",
     "services.styles.text": "Stay ahead of the trends or embrace timeless elegance with our diverse styling options.",
     "services.experience.title": "Relaxing Salon Experience",
-    "services.experience.text": "Enjoy a calming atmosphere with personalized care that makes every visit special."
+    "services.experience.text": "Enjoy a calming atmosphere with personalized care that makes every visit special.",
+    "title": "Share Your Experience With Us",
+    "subtitle": "We'd love to hear how your visit went!",
+    "starPlaceholder": "Click a star",
+    "namePlaceholder": "Your name",
+    "commentPlaceholder": "Tell us about your experience... (optional but appreciated)",
+    "submitButton": "Submit Review",
+    "sending": "Sending...",
+    "success": "Thank you for your review! It will appear soon.",
+    "error": "Something went wrong. Please try again."
 }

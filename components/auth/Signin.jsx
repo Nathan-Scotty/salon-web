@@ -97,7 +97,7 @@ export default function Signin() {
 
                 <div className={styles.container}>
                     <button onClick={handleCancel} className={styles.cancelbtn}>Cancel</button>
-                    <Link href="/signup" className={styles.signupLink}>Don't have an account? Sign up here</Link>
+                    <Link href="/signup" className={styles.signupLink}>Don&apos;t have an account? Sign up here</Link>
                     <span className={styles.psw}>Forgot <Link href="">password?</Link></span>
                 </div>
             </form>
