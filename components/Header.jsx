@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useLocale } from "./LocaleProvider";
 import { FormattedMessage } from "react-intl";
+import logoImg from '../public/davilas_logo.png';
 
 export default function Header() {
     const [locale, setLocale] = useLocale();
@@ -72,7 +73,7 @@ export default function Header() {
         <header>
             <div className={`${styles.navbar} ${scrolled ? styles.scrolled : ''} ${getHeaderColorClass()}`}>
                 <Link href="/" className={styles.logo_container}>
-                    
+                    <Image src={logoImg} alt="Davilas Hair & Beauty Logo" width={70} height={70} />
                 </Link>
                 <div>
                     <div className={`${styles.menu_icon} ${showLinks ? styles.open : ''}`} onClick={toggleLinks}>

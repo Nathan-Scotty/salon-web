@@ -80,5 +80,17 @@
     "sending": "Sending...",
     "success": "Thank you for your review! It will appear soon.",
     "error": "Something went wrong. Please try again.",
-    "contact.socials": "Follow us on social media"
+    "videos.title": "Watch Us in Action",
+    "videos.subtitle": "Salon tour, hair transformations, behind the scenes & client testimonials",
+    "contact.socials": "Follow us on social media",
+    "footer.links.title": "USEFUL LINKS",
+    "footer.links.booking": "Click Here To Make An Appointment",
+    "footer.links.terms": "Terms & Conditions",
+    "footer.links.disclaimer": "Disclaimer",
+    "footer.contact.title": "CONTACTS",
+    "footer.contact.appointment": "By appointment only",
+    "footer.contact.location": "Gatineau-Ottawa, Canada",
+    "footer.subscribe.title": "SUBSCRIBE US",
+    "footer.subscribe.button": "SUBSCRIBE",
+    "footer.copyright": "© 2025 - Nathan Musoko - Developer and Designer"
 }

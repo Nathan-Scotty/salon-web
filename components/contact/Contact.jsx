@@ -164,7 +164,7 @@ export default function Contact() {
 
                     <p>
                         <FontAwesomeIcon icon={faFacebook} className={styles.icon} />
-                        <Link href="https://facebook.com" className={styles.getintouch}>
+                        <Link href="https://www.facebook.com/share/1A9zPkKrVz/?mibextid=wwXIfr" className={styles.getintouch}>
                             Facebook
                         </Link>
                     </p>

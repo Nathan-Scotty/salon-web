@@ -80,5 +80,17 @@
     "sending": "Envoi en cours…",
     "success": "Merci infiniment pour votre avis ! Il apparaîtra très bientôt.",
     "error": "Une erreur est survenue. Veuillez réessayer.",
-    "contact.socials": "Suivez-nous sur les réseaux sociaux"
+    "videos.title": "Découvrez-nous en vidéo",
+    "videos.subtitle": "Visite du salon, transformations, coulisses et avis clients",
+    "contact.socials": "Suivez-nous sur les réseaux sociaux",
+    "footer.links.title": "LIENS UTILES",
+    "footer.links.booking": "Cliquez ici pour prendre rendez-vous",
+    "footer.links.terms": "Conditions générales",
+    "footer.links.disclaimer": "Avertissement",
+    "footer.contact.title": "CONTACT",
+    "footer.contact.appointment": "Sur rendez-vous uniquement",
+    "footer.contact.location": "Gatineau-Ottawa, Canada",
+    "footer.subscribe.title": "ABONNEZ-VOUS",
+    "footer.subscribe.button": "S'ABONNER",
+    "footer.copyright": "© 2025 - Nathan Musoko - Développeur et Designer"
 }
