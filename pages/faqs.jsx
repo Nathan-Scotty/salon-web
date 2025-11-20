@@ -9,12 +9,12 @@ export default function Faqs() {
     return (
         <>
             <Head>
-                <title>Ultimate Industrials | Faqs</title>
-                <meta name="description" content=" Welcome to Construction Supplies Co. Your one-stop shop for all construction materials" />
+                <title>DHB Davilas Hair & Beauty | FAQs</title>
+                <meta name="description" content="Welcome to Davilas Hair & Beauty – Experience the best hair care and styling services tailored to your needs." />
 
-                <meta property="og:title" content="Ultimate Industrials | Accueil" />
-                <meta property="og:description" content="Your one-stop shop for all construction materials" />
-                <meta property="og:image" content="../public/logo.png" />
+                <meta property="og:title" content="Davilas Hair & Beauty | FAQs" />
+                <meta property="og:description" content="Experience the best hair care and styling services tailored to your needs." />
+                <meta property="og:image" content="/davilas_logo.png" />
             </Head>
             <Banner />
             <Faq />

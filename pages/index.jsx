@@ -15,7 +15,7 @@ export default function Home() {
 
         <meta property="og:title" content="Davilas Hair & Beauty | Home" />
         <meta property="og:description" content="Experience the best hair care and styling services tailored to your needs." />
-        <meta property="og:image" content="/stylish-working.jpg" />
+        <meta property="og:image" content="/davilas_logo.png" />
       </Head>
       <div className={styles.containers}>
         <div className={styles.overlay}></div>
