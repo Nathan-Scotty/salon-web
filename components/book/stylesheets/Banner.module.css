@@ -45,3 +45,19 @@
     content: '/ ';
     color: #e5c79c;
 }
+
+@media screen and (max-width: 768px) {
+    .header {
+        margin-top: 85px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .links {
+        font-size: 13.5px;
+    }
+}

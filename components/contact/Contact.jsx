@@ -138,13 +138,11 @@ export default function Contact() {
 
                     <p>
                         <FontAwesomeIcon icon={faMapMarkerAlt} className={styles.icon} />
-                        <span className={styles.bold}><FormattedMessage id="contact.address.label" />:</span>
                         <FormattedMessage id="contact.address.value" />
                     </p>
 
                     <p>
                         <FontAwesomeIcon icon={faEnvelope} className={styles.icon} />
-                        <span className={styles.bold}><FormattedMessage id="contact.email.label" />:</span>{' '}
                         <Link href="mailto:example@gmail.com" className={styles.getintouch}>
                             example@gmail.com
                         </Link>
@@ -152,7 +150,6 @@ export default function Contact() {
 
                     <p>
                         <FontAwesomeIcon icon={faPhone} className={styles.icon} />
-                        <span className={styles.bold}><FormattedMessage id="contact.phone.label" />:</span>{' '}
                         <Link href="tel:+243123456789" className={styles.getintouch}>
                             +243 123 456 789
                         </Link>
@@ -160,25 +157,27 @@ export default function Contact() {
 
                     <p>
                         <FontAwesomeIcon icon={faClock} className={styles.icon} />
-                        <span className={styles.bold}><FormattedMessage id="contact.hours.label" />:</span>{' '}
-                        <FormattedMessage id="contact.hours.value" />
+                        <FormattedMessage id="contact.hours.value"/>
                     </p>
 
                     <h3><FormattedMessage id="contact.socials"/></h3>
 
                     <p>
+                        <FontAwesomeIcon icon={faFacebook} className={styles.icon} />
                         <Link href="https://facebook.com" className={styles.getintouch}>
-                            <FontAwesomeIcon icon={faFacebook} className={styles.icon} />
+                            Facebook
                         </Link>
                     </p>
                     <p>
+                        <FontAwesomeIcon icon={faInstagram} className={styles.icon} />
                         <Link href="https://instagram.com" className={styles.getintouch}>
-                            <FontAwesomeIcon icon={faInstagram} className={styles.icon} />
+                            Instagram
                         </Link>
                     </p>
                     <p>
+                        <FontAwesomeIcon icon={faLinkedin} className={styles.icon} />
                         <Link href="https://linkedin.com" className={styles.getintouch}>
-                            <FontAwesomeIcon icon={faLinkedin} className={styles.icon} />
+                            Linkedin
                         </Link>
                     </p>
                 </div>

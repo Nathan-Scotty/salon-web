@@ -46,6 +46,10 @@ export default function Header() {
     const toggleDropdown = (dropdownName) => {
         setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
     };
+    // FONCTION CLÉ : ferme le menu mobile quand on clique sur un lien
+    const handleLinkClick = () => {
+        setShowLinks(false);
+    };
 
     const toggleLinks = () => {
         setShowLinks(!showLinks);
@@ -76,22 +80,22 @@ export default function Header() {
                     </div>
 
                     <div className={`${styles.navbar_links} ${showLinks ? styles.show : ''}`}>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/' ? styles.active : ''}`} href="/">
+                        <Link className={`${styles.navbar_link} ${activeLink === '/' ? styles.active : ''}`} href="/" onClick={handleLinkClick}>
                             <FormattedMessage id="home" />
                         </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/about' ? styles.active : ''}`} href="/about">
+                        <Link className={`${styles.navbar_link} ${activeLink === '/about' ? styles.active : ''}`} href="/about" onClick={handleLinkClick}>
                             <FormattedMessage id="about" />
                         </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/projects' ? styles.active : ''}`} href="/projects">
+                        <Link className={`${styles.navbar_link} ${activeLink === '/projects' ? styles.active : ''}`} href="/projects" onClick={handleLinkClick}>
                             <FormattedMessage id="services" />
                         </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/booking' ? styles.active : ''}`} href="/booking">
+                        <Link className={`${styles.navbar_link} ${activeLink === '/booking' ? styles.active : ''}`} href="/booking" onClick={handleLinkClick}>
                             <FormattedMessage id="booking" />
                         </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/faqs' ? styles.active : ''}`} href="/faqs">
+                        <Link className={`${styles.navbar_link} ${activeLink === '/faqs' ? styles.active : ''}`} href="/faqs" onClick={handleLinkClick}>
                             <FormattedMessage id="faqs" />
                         </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/contact' ? styles.active : ''}`} href="/contact">
+                        <Link className={`${styles.navbar_link} ${activeLink === '/contact' ? styles.active : ''}`} href="/contact" onClick={handleLinkClick}>
                             <FormattedMessage id="contact" />
                         </Link>
                     </div>

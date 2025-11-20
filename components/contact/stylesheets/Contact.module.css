@@ -394,17 +394,17 @@ textarea~.counter {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .container {
-        margin: 3rem auto;
+        margin: 1rem auto;
         padding: 0 1rem;
     }
 
     .details {
-        padding: 2rem;
+        padding: 1rem;
     }
 
     .contactDetails,
     .contactFormContainer {
-        padding: 2rem;
+        padding: 1rem;
     }
 
     .submitBtn {
@@ -413,16 +413,47 @@ textarea~.counter {
     }
 }
 
+/* ========= MOBILE FIRST OPTIMIZATION ========= */
 @media (max-width: 480px) {
 
-    .contactDetails h2,
-    .contactFormContainer h2 {
-        font-size: 1.8rem;
+    .container {
+        margin: 1.5rem auto;
+        padding: 0 .8rem;
+        border-radius: 18px;
     }
 
-    .counter {
-        font-size: 0.75rem;
-        right: 10px;
-        bottom: 10px;
+    .details {
+        padding: 1.5rem;
+        gap: 2rem;
+    }
+
+    /* Cards more compact */
+    .contactDetails,
+    .contactFormContainer {
+        padding: 1.5rem;
+        border-radius: 18px;
+    }
+
+    /* Reduce text sizes */
+    .contactDetails h2,
+    .contactFormContainer h2 {
+        font-size: 1.6rem;
+    }
+
+    .contactDetails h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1.3rem;
+    }
+
+    .contactDetails p {
+        font-size: .95rem;
+    }
+
+    /* Buttons full width */
+    .submitBtn {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        letter-spacing: .8px;
     }
 }
