@@ -79,5 +79,6 @@
     "submitButton": "Envoyer mon avis",
     "sending": "Envoi en cours…",
     "success": "Merci infiniment pour votre avis ! Il apparaîtra très bientôt.",
-    "error": "Une erreur est survenue. Veuillez réessayer."
+    "error": "Une erreur est survenue. Veuillez réessayer.",
+    "contact.socials": "Suivez-nous sur les réseaux sociaux"
 }

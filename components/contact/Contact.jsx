@@ -10,8 +10,11 @@ import {
     faPhone,
     faClock,
     faCheckCircle,
-    faExclamationCircle,
+    faExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
+
+import { faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+
 import { FormattedMessage } from "react-intl";
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xovynwao';
@@ -142,8 +145,8 @@ export default function Contact() {
                     <p>
                         <FontAwesomeIcon icon={faEnvelope} className={styles.icon} />
                         <span className={styles.bold}><FormattedMessage id="contact.email.label" />:</span>{' '}
-                        <Link href="mailto:nathanmsk7@gmail.com" className={styles.getintouch}>
-                            nathanmsk7@gmail.com
+                        <Link href="mailto:example@gmail.com" className={styles.getintouch}>
+                            example@gmail.com
                         </Link>
                     </p>
 
@@ -159,6 +162,24 @@ export default function Contact() {
                         <FontAwesomeIcon icon={faClock} className={styles.icon} />
                         <span className={styles.bold}><FormattedMessage id="contact.hours.label" />:</span>{' '}
                         <FormattedMessage id="contact.hours.value" />
+                    </p>
+
+                    <h3><FormattedMessage id="contact.socials"/></h3>
+
+                    <p>
+                        <Link href="https://facebook.com" className={styles.getintouch}>
+                            <FontAwesomeIcon icon={faFacebook} className={styles.icon} />
+                        </Link>
+                    </p>
+                    <p>
+                        <Link href="https://instagram.com" className={styles.getintouch}>
+                            <FontAwesomeIcon icon={faInstagram} className={styles.icon} />
+                        </Link>
+                    </p>
+                    <p>
+                        <Link href="https://linkedin.com" className={styles.getintouch}>
+                            <FontAwesomeIcon icon={faLinkedin} className={styles.icon} />
+                        </Link>
                     </p>
                 </div>
 
