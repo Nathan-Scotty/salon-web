@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './stylesheets/Service.module.css';
-import pexels1 from '../../public/pexels-1.jpg';
-import pexels2 from '../../public/pexels-2.jpg';
-import pexels3 from '../../public/pexels-3.jpg';
-import pexels4 from '../../public/pexels-4.jpg';
+import pexels1 from '../../public/pexels-10.jpg';
+import pexels2 from '../../public/pexels-10.jpg';
+import pexels3 from '../../public/pexels-10.jpg';
+import pexels4 from '../../public/pexels-10.jpg';
 
 export default function Service() {
     const [selectedImage, setSelectedImage] = useState(null);

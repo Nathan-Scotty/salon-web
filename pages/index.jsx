@@ -1,18 +1,19 @@
 import Head from 'next/head';
 import styles from '../styles/Index.module.css';
 import About from '../components/about/AboutUs';
-import Service from '../components/service/Service';
 import Faqs from '../components/faqs/Faqs';
 import Contact from '../components/contact/Contact';
+import Link from 'next/link';
+import { FormattedMessage } from 'react-intl';
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Luxury Hair Salon | Home</title>
-        <meta name="description" content="Welcome to Luxury Hair Salon – Experience the best hair care and styling services tailored to your needs." />
-        
-        <meta property="og:title" content="Luxury Hair Salon | Home" />
+        <title>DHB Davilas Hair & Beauty | Home</title>
+        <meta name="description" content="Welcome to Davilas Hair & Beauty – Experience the best hair care and styling services tailored to your needs." />
+
+        <meta property="og:title" content="Davilas Hair & Beauty | Home" />
         <meta property="og:description" content="Experience the best hair care and styling services tailored to your needs." />
         <meta property="og:image" content="../public/salon-logo.png" />
       </Head>
@@ -20,16 +21,17 @@ export default function Home() {
         <div className={styles.overlay}></div>
         <div className={styles.contents}>
           <h1 className={styles.title}>
-            Welcome to Luxury Hair Salon
+            <FormattedMessage id="home.hero.title" />
           </h1>
           <p className={styles.description}>
-            Experience the best hair care and styling services
+            <FormattedMessage id="home.hero.subtitle" />
           </p>
-          <button className={styles.ctaButton}>Book an appointment</button>
+          <Link href="/booking" className={styles.ctaButton}>
+            <FormattedMessage id="appointment.title" />
+          </Link>
         </div>
       </div>
       <About />
-      <Service />
       <Faqs />
       <Contact />
     </>

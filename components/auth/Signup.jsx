@@ -6,26 +6,21 @@ import { useState } from 'react';
 export default function Signup() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPsw, setConfirmPsw] = useState('');
+    const [passwordHash, setPasswordHash] = useState('');
+    const [phone, setPhone] = useState('');
 
     const handleCancel = () => {
         setEmail("")
         setName("")
-        setPassword("")
-        setConfirmPsw("")
+        setPasswordHash("")
+        setPhone("")
     }
 
     const handleSignup = async (e) => {
         e.preventDefault();
 
-        if (!name || !email || !password || !confirmPsw) {
+        if (!name || !email || !passwordHash || !phone) {
             console.error("All fields are required")
-            return;
-        }
-
-        if (password !== confirmPsw) {
-            console.error("Passwords don't macth")
             return;
         }
 
@@ -40,7 +35,7 @@ export default function Signup() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ name, email, password, confirmPassword: confirmPsw })
+                body: JSON.stringify({ name, email, passwordHash, phone, role: 'ADMIN' })
             });
 
             if (response.ok) {
@@ -96,17 +91,17 @@ export default function Signup() {
                     <input
                         type="password"
                         placeholder="Enter Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={passwordHash}
+                        onChange={(e) => setPasswordHash(e.target.value)}
                         required
                     />
 
-                    <label>Confirm</label>
+                    <label>Phone</label>
                     <input
-                        type="password"
-                        placeholder="Confirm Your Password"
-                        value={confirmPsw}
-                        onChange={(e) => setConfirmPsw(e.target.value)}
+                        type="tel"
+                        placeholder="Enter Your Phone Number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                         required
                     />
 

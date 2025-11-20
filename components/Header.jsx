@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useLocale } from "./LocaleProvider";
 import { FormattedMessage } from "react-intl";
-import logo from '../public/logo.png';
 
 export default function Header() {
     const [locale, setLocale] = useLocale();
@@ -60,6 +59,7 @@ export default function Header() {
             case '/services': return styles.services;
             case '/booking': return styles.booking;
             case '/projects': return styles.projects;
+            case '/admin': return styles.adminPage;
             default: return styles.defaultPage;
         }
     };
@@ -82,11 +82,8 @@ export default function Header() {
                         <Link className={`${styles.navbar_link} ${activeLink === '/about' ? styles.active : ''}`} href="/about">
                             <FormattedMessage id="about" />
                         </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/services' ? styles.active : ''}`} href="/services">
-                            <FormattedMessage id="services" />
-                        </Link>
                         <Link className={`${styles.navbar_link} ${activeLink === '/projects' ? styles.active : ''}`} href="/projects">
-                            <FormattedMessage id="projects" />
+                            <FormattedMessage id="services" />
                         </Link>
                         <Link className={`${styles.navbar_link} ${activeLink === '/booking' ? styles.active : ''}`} href="/booking">
                             <FormattedMessage id="booking" />

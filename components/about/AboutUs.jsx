@@ -1,70 +1,127 @@
-import Image from 'next/image'
-import img from '../../public/imageAbout.jpg'
-import styles from './stylesheets/AboutUs.module.css'
+import Image from 'next/image';
+import styles from './stylesheets/AboutUs.module.css';
+import { FormattedMessage } from 'react-intl';
+
+// Import your images (place them in /public/images/)
+import heroImg from '../../public/salon-hero.jpg';
+import stylistImg from '../../public/stylish-working.jpg';
+
+// Service Icons (SVG or PNG - place in /public/icons/)
+import pexels1 from '../../public/pexels-10.jpeg';
+import pexels2 from '../../public/pexels-9.jpeg';
+import pexels3 from '../../public/pexels-4.jpeg';
+import pexels4 from '../../public/pexels-3.jpeg';
 
 export default function About() {
-
-
-    return <>
-        <div className={styles.containerAbout}>
-            <div className={styles.aboutUs}>
-                <h2>About Us</h2>
-                <p>
-                    At [Salon Name], we are dedicated to providing high-quality hair care and styling services for both men and women. Our team of professional stylists specializes in haircuts, coloring, treatments, and modern styles that enhance your natural beauty. Whether you’re looking for a fresh cut,
-                    a bold transformation, or a relaxing treatment, we ensure an exceptional salon experience tailored to your needs.
-                </p>
-
-                <section>
-                    <h3>Our Mission</h3>
-                    <p>"To be the leading hair salon that inspires confidence and self-expression through expert hair care, creativity, and innovation."
-
-                        We believe that hair is an extension of your personality, and our goal is to help every client look and feel their best with styles that suit their unique identity.</p>
-                </section>
-
-                <section>
-                    <h3>Our Vision</h3>
-                    <p>🌟 To provide exceptional hair services in a comfortable and welcoming environment.
-                        To stay updated with the latest trends and techniques to offer the best styles for men and women.
-                        To use high-quality products that nourish and protect all hair types.
-                        To build strong relationships with our clients through personalized care and attention.
-
-                        At [Salon Name], your satisfaction is our priority. Book an appointment today and let us transform your hair with expertise and passion! ✨</p>
-                </section>
+    return (
+        <>
+            {/* HERO SECTION WITH IMAGE */}
+            <div className={styles.hero}>
+                <div className={styles.heroOverlay}>
+                    <h1 className={styles.heroTitle}><FormattedMessage id="hero.title" /></h1>
+                    <p className={styles.heroSubtitle}><FormattedMessage id="hero.subtitle" /></p>
+                </div>
             </div>
-            <Image className={styles.imageAbout} src={img} alt='img' />
-        </div>
 
-        <section className={styles.reason}>
-            <h2>Why Choose Us</h2>
-            <h3>Experience Luxury Hair Care</h3>
-            <div className={styles.services}>
+            {/* ABOUT US SECTION */}
+            <section className={styles.containerAbout}>
+                <div className={styles.aboutContent}>
+                    <h2 className={styles.sectionTitle}><FormattedMessage id="about.title" /></h2>
+                    <p className={styles.aboutText}>
+                        <FormattedMessage id="about.description" />
+                    </p>
 
-                <div className={styles.service}>
-                    <h1>✂️</h1>
-                    <h4>Professional Stylists</h4>
-                    <p>Our expert hairstylists bring years of experience to craft the perfect look for you.</p>
+                    {/* MISSION WITH IMAGE */}
+                    <div className={styles.missionGrid}>
+                        <div className={styles.missionText}>
+                            <h3><FormattedMessage id="mission.title" /></h3>
+                            <p>
+                                <FormattedMessage id="mission.text" />
+                            </p>
+                        </div>
+                        <div className={styles.missionImage}>
+                            <Image
+                                src={stylistImg}
+                                alt="Professional stylist at work"
+                                width={500}
+                                height={350}
+                                className={styles.roundedImage}
+                            />
+                        </div>
+                    </div>
+
+                    {/* VISION WITH IMAGE */}
+                    <div className={styles.visionGrid}>
+                        <div className={styles.visionImage}>
+                            <Image
+                                src={heroImg}
+                                alt="Relaxing salon interior"
+                                width={500}
+                                height={350}
+                                className={styles.roundedImage}
+                            />
+                        </div>
+                        <div className={styles.visionText}>
+                            <h3><FormattedMessage id="vision.title" /></h3>
+                            <ul className={styles.visionList}>
+                                <li><FormattedMessage id="vision.point1" /></li>
+                                <li><FormattedMessage id="vision.point2" /></li>
+                                <li><FormattedMessage id="vision.point3" /></li>
+                                <li><FormattedMessage id="vision.point4" /></li>
+                            </ul>
+                            <p className={styles.ctaText}>
+                                <FormattedMessage id="vision.cta" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* WHY CHOOSE US - WITH ICONS */}
+            <section className={styles.reason}>
+                <div className={styles.reasonHeader}>
+                    <h2><FormattedMessage id="why.title" /></h2>
+                    <h3><FormattedMessage id="why.subtitle" /></h3>
                 </div>
 
-                <div className={styles.service}>
-                <h1>🧴</h1>
-                    <h4>Premium Hair Products</h4>
-                    <p>We use top-quality, salon-grade products to keep your hair healthy and vibrant.</p>
+                <div className={styles.services}>
+                    {/* Service 1 */}
+                    <div className={styles.service}>
+                        <div className={styles.iconWrapper}>
+                            <Image src={pexels1} alt="Scissors" width={400} height={400} />
+                        </div>
+                        <h4><FormattedMessage id="services.stylist.title" /></h4>
+                        <p><FormattedMessage id="services.stylist.text" /></p>
+                    </div>
+
+                    {/* Service 2 */}
+                    <div className={styles.service}>
+                        <div className={styles.iconWrapper}>
+                            <Image src={pexels2} alt="Premium Products" width={400} height={400} />
+                        </div>
+                        <h4><FormattedMessage id="services.products.title" /></h4>
+                        <p><FormattedMessage id="services.products.text" /></p>
+                    </div>
+
+                    {/* Service 3 */}
+                    <div className={styles.service}>
+                        <div className={styles.iconWrapper}>
+                            <Image src={pexels3} alt="Trendy Styles" width={400} height={400} />
+                        </div>
+                        <h4><FormattedMessage id="services.styles.title" /></h4>
+                        <p><FormattedMessage id="services.styles.text" /></p>
+                    </div>
+
+                    {/* Service 4 */}
+                    <div className={styles.service}>
+                        <div className={styles.iconWrapper}>
+                            <Image src={pexels4} alt="Relaxing Experience" width={400} height={400} />
+                        </div>
+                        <h4><FormattedMessage id="services.experience.title" /></h4>
+                        <p><FormattedMessage id="services.experience.text" /></p>
+                    </div>
                 </div>
-
-                <div className={styles.service}>
-                    <h1>💇‍♀️</h1>
-                    <h4>Trendy & Classic Styles</h4>
-                    <p>Stay ahead of the trends or embrace timeless elegance with our diverse styling options.</p>
-                </div>
-
-                <div className={styles.service}>
-                    <h1>🌿</h1>
-                    <h4>Relaxing Salon Experience</h4>
-                    <p>Enjoy a calming atmosphere with personalized care that makes every visit special.</p>
-                </div>
-
-            </div>
-        </section>
-
-    </>
+            </section>
+        </>
+    );
 }

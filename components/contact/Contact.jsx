@@ -1,65 +1,282 @@
-import styles from './stylesheets/Contact.module.css'
-import Link from 'next/link'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarkerAlt, faEnvelope, faPhone, faClock } from '@fortawesome/free-solid-svg-icons'
+'use client';
+
+import { useState } from 'react';
+import styles from './stylesheets/Contact.module.css';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faMapMarkerAlt,
+    faEnvelope,
+    faPhone,
+    faClock,
+    faCheckCircle,
+    faExclamationCircle,
+} from '@fortawesome/free-solid-svg-icons';
+import { FormattedMessage } from "react-intl";
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xovynwao';
 
 export default function Contact() {
+    const [status, setStatus] = useState('idle');
+    const [message, setMessage] = useState('');
+
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const [errors, setErrors] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const limits = {
+        name: { min: 2, max: 30 },
+        subject: { min: 3, max: 50 },
+        message: { min: 10, max: 500 },
+    };
+
+    const validateField = (name, value) => {
+        let error = '';
+
+        switch (name) {
+            case 'name':
+                if (!value.trim()) error = 'Name is required';
+                else if (value.length < limits.name.min) error = `Name must be at least ${limits.name.min} characters`;
+                else if (value.length > limits.name.max) error = `Name must be under ${limits.name.max} characters`;
+                else if (!/^[a-zA-Z\s'-]+$/.test(value)) error = 'Name can only contain letters, spaces, hyphens, and apostrophes';
+                break;
+
+            case 'email':
+                if (!value) error = 'Email is required';
+                else if (!/^\S+@\S+\.\S+$/.test(value)) error = 'Please enter a valid email';
+                break;
+
+            case 'subject':
+                if (!value.trim()) error = 'Subject is required';
+                else if (value.length < limits.subject.min) error = `Subject must be at least ${limits.subject.min} characters`;
+                else if (value.length > limits.subject.max) error = `Subject must be under ${limits.subject.max} characters`;
+                break;
+
+            case 'message':
+                if (!value.trim()) error = 'Message is required';
+                else if (value.length < limits.message.min) error = `Message must be at least ${limits.message.min} characters`;
+                else if (value.length > limits.message.max) error = `Message must be under ${limits.message.max} characters`;
+                break;
+        }
+
+        return error;
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        const error = validateField(name, value);
+        setErrors((prev) => ({ ...prev, [name]: error }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Final validation
+        const newErrors = {};
+        Object.keys(formData).forEach((key) => {
+            const error = validateField(key, formData[key]); // ← Fixed: No 'as keyof'
+            if (error) newErrors[key] = error;
+        });
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setStatus('sending');
+        setMessage('');
+
+        const formDataToSend = new FormData();
+        Object.entries(formData).forEach(([key, value]) => {
+            formDataToSend.append(key, value);
+        });
+
+        try {
+            const response = await fetch(FORMSPREE_ENDPOINT, {
+                method: 'POST',
+                body: formDataToSend,
+                headers: { Accept: 'application/json' },
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                setMessage('Thank you! Your message has been sent.');
+                setFormData({ name: '', email: '', subject: '', message: '' });
+                setErrors({});
+            } else {
+                throw new Error();
+            }
+        } catch {
+            setStatus('error');
+            setMessage('Failed to send. Please try again.');
+        }
+    };
+
     return (
         <div className={styles.container}>
-            <div className={styles.mapContainer}>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11047.702194363234!2d-75.72779662341442!3d45.47654740109582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cce041e3adcb7e3%3A0xa3e2e29a405bb7d4!2sGatineau%2C%20QC%2C%20Canada!5e0!3m2!1sen!2sca!4v1711234567890!5m2!1sen!2sca"
-                    width="600"
-                    height="450"
-                    allowFullScreen=""
-                    loading="lazy"
-                    className={styles.map}
-                ></iframe>
-            </div>
 
             <div className={styles.details}>
+
+                {/* CONTACT DETAILS */}
                 <div className={styles.contactDetails}>
-                    <h2>Contact Us</h2>
-                    <h3>Get In Touch</h3>
+                    <h2><FormattedMessage id="contact.title" /></h2>
+                    <h3><FormattedMessage id="contact.subtitle" /></h3>
+
                     <p>
                         <FontAwesomeIcon icon={faMapMarkerAlt} className={styles.icon} />
-                        <span className={styles.bold}>ADDRESS:</span> Canada, Gatineau
+                        <span className={styles.bold}><FormattedMessage id="contact.address.label" />:</span>
+                        <FormattedMessage id="contact.address.value" />
                     </p>
+
                     <p>
                         <FontAwesomeIcon icon={faEnvelope} className={styles.icon} />
-                        <span className={styles.bold}>EMAIL:</span>
-                        <Link href="mailto:example@mail.com" className={styles.getintouch}> example@mail.com</Link>
+                        <span className={styles.bold}><FormattedMessage id="contact.email.label" />:</span>{' '}
+                        <Link href="mailto:nathanmsk7@gmail.com" className={styles.getintouch}>
+                            nathanmsk7@gmail.com
+                        </Link>
                     </p>
+
                     <p>
                         <FontAwesomeIcon icon={faPhone} className={styles.icon} />
-                        <span className={styles.bold}>CALL US:</span>
-                        <Link href="tel:+243123456789" className={styles.getintouch}> +243123456789</Link>
+                        <span className={styles.bold}><FormattedMessage id="contact.phone.label" />:</span>{' '}
+                        <Link href="tel:+243123456789" className={styles.getintouch}>
+                            +243 123 456 789
+                        </Link>
                     </p>
+
                     <p>
                         <FontAwesomeIcon icon={faClock} className={styles.icon} />
-                        <span className={styles.bold}>OFFICE TIME:</span> Monday to Friday 9:00am - 6:00pm
+                        <span className={styles.bold}><FormattedMessage id="contact.hours.label" />:</span>{' '}
+                        <FormattedMessage id="contact.hours.value" />
                     </p>
                 </div>
 
+                {/* CONTACT FORM */}
                 <div className={styles.contactFormContainer}>
-                    <h2>Send Us a Message</h2>
-                    <form action="#" method="post">
-                        <label htmlFor="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Your name.." required />
+                    <h2><FormattedMessage id="contact.form.title" /></h2>
 
-                        <label htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Your email.." required />
+                    {status === 'success' && (
+                        <div className={styles.alertSuccess}>
+                            <FontAwesomeIcon icon={faCheckCircle} /> {message}
+                        </div>
+                    )}
+                    {status === 'error' && (
+                        <div className={styles.alertError}>
+                            <FontAwesomeIcon icon={faExclamationCircle} /> {message}
+                        </div>
+                    )}
 
-                        <label htmlFor="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" placeholder="Subject.." required />
+                    <form onSubmit={handleSubmit} noValidate>
+                        {/* NAME */}
+                        <div className={styles.field}>
+                            <label htmlFor="name">
+                                <FormattedMessage id="contact.form.name" />
+                            </label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                placeholder="Your name.."
+                                required
+                                disabled={status === 'sending'}
+                                className={errors.name ? styles.inputError : ''}
+                            />
+                            {errors.name && <span className={styles.errorText}>{errors.name}</span>}
+                            <span className={styles.counter}>
+                                {formData.name.length}/{limits.name.max}
+                            </span>
+                        </div>
 
-                        <label htmlFor="message">Message</label>
-                        <textarea id="message" name="message" placeholder="Write your message here.." required></textarea>
+                        {/* EMAIL */}
+                        <div className={styles.field}>
+                            <label htmlFor="email">
+                                <FormattedMessage id="contact.form.email" />
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="Your email.."
+                                required
+                                disabled={status === 'sending'}
+                                className={errors.email ? styles.inputError : ''}
+                            />
+                            {errors.email && <span className={styles.errorText}>{errors.email}</span>}
+                        </div>
 
-                        <input type="submit" value="Submit" />
+                        {/* SUBJECT */}
+                        <div className={styles.field}>
+                            <label htmlFor="subject">
+                                <FormattedMessage id="contact.form.subject" />
+                            </label>
+                            <input
+                                type="text"
+                                id="subject"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleChange}
+                                placeholder="Subject.."
+                                required
+                                disabled={status === 'sending'}
+                                className={errors.subject ? styles.inputError : ''}
+                            />
+                            {errors.subject && <span className={styles.errorText}>{errors.subject}</span>}
+                            <span className={styles.counter}>
+                                {formData.subject.length}/{limits.subject.max}
+                            </span>
+                        </div>
+
+                        {/* MESSAGE */}
+                        <div className={styles.field}>
+                            <label htmlFor="message">
+                                <FormattedMessage id="contact.form.message" />
+                            </label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                                placeholder="Write your message here.."
+                                required
+                                rows={5}
+                                disabled={status === 'sending'}
+                                className={errors.message ? styles.inputError : ''}
+                            ></textarea>
+                            {errors.message && <span className={styles.errorText}>{errors.message}</span>}
+                            <span className={styles.counter}>
+                                {formData.message.length}/{limits.message.max} (min {limits.message.min})
+                            </span>
+                        </div>
+
+                        <button
+                            type="submit"
+                            className={styles.submitBtn}
+                            disabled={status === 'sending'}
+                        >
+                            {status === 'sending' ? (
+                                <FormattedMessage id="contact.form.sending" />
+                            ) : (
+                                <FormattedMessage id="contact.form.send" />
+                            )}
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     )
-}
+};

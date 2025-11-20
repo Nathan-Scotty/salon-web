@@ -1,18 +1,22 @@
 import styles from './stylesheets/Project.module.css'
 import Image from "next/image";
-import img1 from "../../public/pexels-1.jpg";
-import img2 from "../../public/pexels-2.jpg";
-import img3 from "../../public/pexels-3.jpg";
-import img4 from "../../public/pexels-4.jpg";
-import img5 from "../../public/pexels-5.jpg";
-import img6 from "../../public/pexels-6.jpg";
-import img7 from "../../public/pexels-7.jpg";
-import img8 from "../../public/pexels-8.jpg";
-import img9 from "../../public/pexels-9.jpg";
-import img10 from "../../public/pexels-10.jpg";
+import img1 from "../../public/pexels-9.jpeg";
+import img2 from "../../public/pexels-8.jpeg";
+import img3 from "../../public/pexels-3.jpeg";
+import img4 from "../../public/pexels-6.jpg";
+import img5 from "../../public/pexels-5.jpeg";
+import img6 from "../../public/pexels-4.jpeg";
+import img7 from "../../public/pexels-11.jpeg";
+import img8 from "../../public/pexels-2.jpg";
+import img9 from "../../public/pexels-3.jpg";
+import img10 from "../../public/pexels-10.jpeg";
+import img11 from "../../public/pexels-1.jpeg";
+import img12 from "../../public/pexels-2.jpeg";
 import { useEffect, useState } from "react";
 
-const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
+//const videoSrc = "/video1.mp4";
+
+const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12];
 
 export default function Project() {
   const [slideIndex, setSlideIndex] = useState(1);
@@ -79,7 +83,7 @@ export default function Project() {
               <Image
                 className={`${styles.demo} ${styles.cursor}`}
                 src={img}
-                alt={`img${index + 1}`}
+                alt={`Image ${index + 1}`}
                 style={{ width: '100%', height: 'auto', verticalAlign: 'middle' }}
                 onClick={() => setCurrentSlide(index + 1)}
               />

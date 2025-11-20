@@ -1,6 +1,6 @@
-import BookingTeaser from "../components/book/Booking"
 import Banner from "../components/book/Banner"
 import Head from "next/head"
+import AppointmentForm from "../components/book/AppointmentForm"
 
 export default function Booking() {
 
@@ -15,7 +15,7 @@ export default function Booking() {
                 <meta property="og:image" content="../public/salon-logo.png" />
             </Head>
             <Banner/>
-            <BookingTeaser/>
+            <AppointmentForm />
         </>
     )
 }
