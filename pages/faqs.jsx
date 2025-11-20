@@ -12,7 +12,7 @@ export default function Faqs() {
                 <title>DHB Davilas Hair & Beauty | FAQs</title>
                 <meta name="description" content="Welcome to Davilas Hair & Beauty – Experience the best hair care and styling services tailored to your needs." />
 
-                <meta property="og:title" content="Davilas Hair & Beauty | FAQs" />
+                <meta property="og:title" content="DHB-Davilas Hair & Beauty | FAQs" />
                 <meta property="og:description" content="Experience the best hair care and styling services tailored to your needs." />
                 <meta property="og:image" content="/davilas_logo.png" />
             </Head>

@@ -13,7 +13,7 @@ export default function Home() {
         <title>DHB Davilas Hair & Beauty | Home</title>
         <meta name="description" content="Welcome to Davilas Hair & Beauty – Experience the best hair care and styling services tailored to your needs." />
 
-        <meta property="og:title" content="Davilas Hair & Beauty | Home" />
+        <meta property="og:title" content="DHB-Davilas Hair & Beauty | Home" />
         <meta property="og:description" content="Experience the best hair care and styling services tailored to your needs." />
         <meta property="og:image" content="/davilas_logo.png" />
       </Head>
