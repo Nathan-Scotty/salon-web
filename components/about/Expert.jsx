@@ -15,7 +15,7 @@ import { FormattedMessage } from 'react-intl';
 import {useIntl} from 'react-intl';
 
 
-const FORMSPREE_REVIEW_ENDPOINT = 'https://formspree.io/f/xovynwao'; // Change this or create a new form!
+const FORMSPREE_REVIEW_ENDPOINT = 'https://formspree.io/f/meodepkv'; // Change this or create a new form!
 
 export default function Expert() {
     const [rating, setRating] = useState(0);

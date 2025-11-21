@@ -17,7 +17,7 @@ import { faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-sv
 
 import { FormattedMessage } from "react-intl";
 
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xovynwao';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/meodepkv';
 
 export default function Contact() {
     const [status, setStatus] = useState('idle');
@@ -143,15 +143,15 @@ export default function Contact() {
 
                     <p>
                         <FontAwesomeIcon icon={faEnvelope} className={styles.icon} />
-                        <Link href="mailto:example@gmail.com" className={styles.getintouch}>
-                            example@gmail.com
+                        <Link href="mailto:davilasbarack@gmail.com" className={styles.getintouch}>
+                            davilasbarack@gmail.com
                         </Link>
                     </p>
 
                     <p>
                         <FontAwesomeIcon icon={faPhone} className={styles.icon} />
                         <Link href="tel:+243123456789" className={styles.getintouch}>
-                            +243 123 456 789
+                            +1 613-710-0754
                         </Link>
                     </p>
 
@@ -172,12 +172,6 @@ export default function Contact() {
                         <FontAwesomeIcon icon={faInstagram} className={styles.icon} />
                         <Link href="https://instagram.com" className={styles.getintouch}>
                             Instagram
-                        </Link>
-                    </p>
-                    <p>
-                        <FontAwesomeIcon icon={faLinkedin} className={styles.icon} />
-                        <Link href="https://linkedin.com" className={styles.getintouch}>
-                            Linkedin
                         </Link>
                     </p>
                 </div>
