@@ -13,7 +13,7 @@ export default function AppointmentForm() {
         <h2 className={styles.title}><FormattedMessage id='appointment.title'/></h2>
         <iframe
           title="Service and Schedule Info"
-          src="https://calendly.com/qualitechoisie13/nouvelles-disponibilites"
+          src="https://calendly.com/davilasbarack/disponibilite-pour-la-coiffure"
           width="100%"
           height="700"
           frameBorder="0">
