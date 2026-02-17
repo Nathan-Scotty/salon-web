@@ -17,20 +17,6 @@ export default function Home() {
         <meta property="og:description" content="Experience the best hair care and styling services tailored to your needs." />
         <meta property="og:image" content="/davilas_logo.png" />
       </Head>
-      <div className={styles.containers}>
-        <div className={styles.overlay}></div>
-        <div className={styles.contents}>
-          <h1 className={styles.title}>
-            <FormattedMessage id="home.hero.title" />
-          </h1>
-          <p className={styles.description}>
-            <FormattedMessage id="home.hero.subtitle" />
-          </p>
-          <Link href="/booking" className={styles.ctaButton}>
-            <FormattedMessage id="appointment.title" />
-          </Link>
-        </div>
-      </div>
       <About />
       <Faqs />
       <Contact />

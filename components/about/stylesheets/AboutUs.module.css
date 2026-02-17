@@ -269,6 +269,59 @@
     object-fit: cover;
 }
 
+/* Bouton "Voir plus" */
+.seeMoreWrapper {
+  cursor: pointer;
+}
+
+.seeMoreCard {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  background: #000;
+  aspect-ratio: 16 / 9;
+  transition: transform 0.4s ease;
+}
+
+.seeMoreCard:hover {
+  transform: translateY(-12px);
+}
+
+.seeMoreOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: center;
+  z-index: 2;
+  padding: 1rem;
+}
+
+.seeMoreText {
+  background: rgba(44, 62, 80, 0.85);
+  padding: 1.2rem 2.2rem;
+  border-radius: 50px;
+  line-height: 1.4;
+}
+
+/* Améliore les vidéos dans la grille (sans controls ici) */
+.videoWrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Optionnel : hover plus visible sur la carte voir plus */
+.seeMoreCard:hover .seeMoreOverlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
 /* RESPONSIVE */
 /* Mobile & Small Screens – Stack + Fit Perfectly */
 @media (max-width: 768px) {

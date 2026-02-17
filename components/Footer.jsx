@@ -61,8 +61,8 @@ export default function Footer() {
                         defaultMessage="Gatineau-Ottawa, Canada"
                     />
                 </p>
-                <p>+880 123 456 789</p>
-                <p>example@mail.com</p>
+                <p>+1 613 710 07-54</p>
+                <p>davilasbarack@gmail.com</p>
             </div>
 
             {/* SUBSCRIBE */}

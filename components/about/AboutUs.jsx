@@ -1,33 +1,82 @@
 import Image from 'next/image';
 import styles from './stylesheets/AboutUs.module.css';
 import { FormattedMessage } from 'react-intl';
+import { useState, useRef } from 'react';
 
-// Import your images (place them in /public/images/)
+// Lightbox imports
+import Lightbox from 'yet-another-react-lightbox';
+import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/thumbnails.css';
+
+import VideoPlugin from 'yet-another-react-lightbox/plugins/video';
+import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
+
+// Tes imports images existants...
 import heroImg from '../../public/salon-hero.jpg';
 import stylistImg from '../../public/stylish-working.jpg';
-
-// Service Icons (SVG or PNG - place in /public/icons/)
 import pexels1 from '../../public/pexels-10.jpeg';
 import pexels2 from '../../public/pexels-9.jpeg';
 import pexels3 from '../../public/pexels-4.jpeg';
 import pexels4 from '../../public/pexels-3.jpeg';
-import { useRef } from 'react';
 
-const video1 = '/video1.mp4';
-const video2 = '/video2.mp4';
-const video3 = '/video3.mp4';
-const video4 = '/video4.mp4';
+// Tes vidéos (ajoute-en autant que tu veux ici)
+const allVideos = [
+    {
+        src: '/video1.mp4',
+        poster: '/dhb_logo.jpg',
+        caption: 'Visite complète du salon',
+    },
+    {
+        src: '/video2.mp4',
+        poster: '/pexels-1.jpeg',
+        caption: 'Transformation avant/après',
+    },
+    {
+        src: '/video3.mp4',
+        poster: '/pexels-5.jpg',
+        caption: 'Dans les coulisses',
+    },
+    {
+        src: '/video4.mp4',
+        poster: '/pexels-6.jpg',
+        caption: 'Ce que disent nos clients',
+    },
+    // Ajoute ici tes vidéos supplémentaires (elles iront dans le lightbox)
+    // {
+    //   src: '/video5.mp4',
+    //   poster: '/poster5.jpg',
+    //   caption: 'Tutoriel coiffure rapide',
+    // },
+    // ...
+];
+
+const displayedVideos = allVideos.slice(0, 4); // Les 4 affichées directement
 
 export default function About() {
+    const [open, setOpen] = useState(false);
+    const [lightboxIndex, setLightboxIndex] = useState(0);
     const videoRefs = useRef([]);
 
     const handleVideoPlay = (index) => {
-        videoRefs.current.forEach((video, i) => {
-            if (video && i !== index) {
-                video.pause();
+        videoRefs.current.forEach((vid, i) => {
+            if (vid && i !== index) {
+                vid.pause();
             }
         });
-    }
+    };
+
+    // Ouvre le lightbox à un index précis
+    const openLightbox = (index) => {
+        setLightboxIndex(index);
+        setOpen(true);
+    };
+
+    // Pour le bouton "Voir plus" → commence à la 5e vidéo (index 4)
+    const handleSeeMore = () => {
+        setLightboxIndex(4);
+        setOpen(true);
+    };
+
     return (
         <>
             {/* HERO SECTION WITH IMAGE */}
@@ -92,6 +141,7 @@ export default function About() {
                 </div>
             </section>
 
+            {/* SECTION VIDÉOS MODIFIÉE */}
             <section className={styles.videoSection}>
                 <div className={styles.videoHeader}>
                     <h2><FormattedMessage id="videos.title" defaultMessage="Découvrez-nous en vidéo" /></h2>
@@ -99,143 +149,73 @@ export default function About() {
                 </div>
 
                 <div className={styles.videoGrid}>
-                    {/* Vidéo 1 */}
-                    <div className={styles.videoWrapper}>
-                        <video
-                            ref={(el) => (videoRefs.current[0] = el)}
-                            src={video1}
-                            poster="/dhb_logo.jpg" // ← image de preview (optionnel mais joli)
-                            controls
-                            preload="metadata"
-                            className={styles.localVideo}
-                            onPlay={() => handleVideoPlay(0)}
+                    {displayedVideos.map((video, idx) => (
+                        <div
+                            key={idx}
+                            className={styles.videoWrapper}
+                            onClick={() => openLightbox(idx)}
+                            style={{ cursor: 'pointer' }}
                         >
-                            Votre navigateur ne supporte pas la vidéo.
-                        </video>
-                        <p className={styles.videoCaption}>Visite complète du salon</p>
-                    </div>
+                            <video
+                                ref={(el) => (videoRefs.current[idx] = el)}
+                                src={video.src}
+                                poster={video.poster}
+                                preload="metadata"
+                                className={styles.localVideo}
+                                controls={false} // on enlève les controls ici car on ouvre le lightbox
+                                onPlay={() => handleVideoPlay(idx)}
+                                muted // évite les popups autoplay
+                            >
+                                Votre navigateur ne supporte pas la vidéo.
+                            </video>
+                            <p className={styles.videoCaption}>{video.caption}</p>
+                        </div>
+                    ))}
 
-                    {/* Vidéo 2 */}
-                    <div className={styles.videoWrapper}>
-                        <video
-                            ref={(el) => (videoRefs.current[1] = el)}
-                            src={video2}
-                            poster="/dhb_logo.jpg"
-                            controls
-                            preload="metadata"
-                            className={styles.localVideo}
-                            onPlay={() => handleVideoPlay(1)}
-                        />
-                        <p className={styles.videoCaption}>Transformation avant/après</p>
-                    </div>
-
-                    {/* Vidéo 3 */}
-                    <div className={styles.videoWrapper}>
-                        <video
-                            ref={(el) => (videoRefs.current[2] = el)}
-                            src={video3}
-                            poster="/dhb_logo.jpg"
-                            controls
-                            preload="metadata"
-                            className={styles.localVideo}
-                            onPlay={() => handleVideoPlay(2)}
-                        />
-                        <p className={styles.videoCaption}>Dans les coulisses</p>
-                    </div>
-
-                    {/* Vidéo 4 */}
-                    <div className={styles.videoWrapper}>
-                        <video
-                            ref={(el) => (videoRefs.current[3] = el)}
-                            src={video4}
-                            poster="/dhb_logo.jpg"
-                            controls
-                            preload="metadata"
-                            className={styles.localVideo}
-                            onPlay={() => handleVideoPlay(3)}
-                        />
-                        <p className={styles.videoCaption}>Ce que disent nos clients</p>
-                    </div>
+                    {/* Bouton Voir plus si + de 4 vidéos */}
+                    {allVideos.length > 4 && (
+                        <div className={styles.seeMoreWrapper} onClick={handleSeeMore}>
+                            <div className={styles.seeMoreCard}>
+                                <div className={styles.seeMoreOverlay}>
+                                    <span className={styles.seeMoreText}>
+                                        Voir plus<br />({allVideos.length - 4})
+                                    </span>
+                                </div>
+                                {/* Preview animée de la première vidéo supplémentaire (optionnel mais joli) */}
+                                {allVideos[4] && (
+                                    <video
+                                        src={allVideos[4].src}
+                                        poster={allVideos[4].poster}
+                                        className={styles.localVideo}
+                                        muted
+                                        loop
+                                        autoPlay
+                                        playsInline
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </section>
 
-            {/* WHY CHOOSE US - STYLE VIDÉOS (plein écran, hover sexy) */}
-            <section className={styles.reason}>
-                <div className={styles.reasonHeader}>
-                    <h2><FormattedMessage id="why.title" /></h2>
-                    <h3><FormattedMessage id="why.subtitle" /></h3>
-                </div>
-
-                <div className={styles.servicesGrid}>   {/* ← même grid que les vidéos */}
-                    {/* Service 1 */}
-                    <div className={styles.serviceCard}>
-                        <div className={styles.serviceImageWrapper}>
-                            <Image
-                                src={pexels1}
-                                alt="Styliste professionnelle"
-                                fill
-                                className={styles.serviceImage}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                            />
-                        </div>
-                        <div className={styles.serviceContent}>
-                            <h4><FormattedMessage id="services.stylist.title" /></h4>
-                            <p><FormattedMessage id="services.stylist.text" /></p>
-                        </div>
-                    </div>
-
-                    {/* Service 2 */}
-                    <div className={styles.serviceCard}>
-                        <div className={styles.serviceImageWrapper}>
-                            <Image
-                                src={pexels2}
-                                alt="Produits premium"
-                                fill
-                                className={styles.serviceImage}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                            />
-                        </div>
-                        <div className={styles.serviceContent}>
-                            <h4><FormattedMessage id="services.products.title" /></h4>
-                            <p><FormattedMessage id="services.products.text" /></p>
-                        </div>
-                    </div>
-
-                    {/* Service 3 */}
-                    <div className={styles.serviceCard}>
-                        <div className={styles.serviceImageWrapper}>
-                            <Image
-                                src={pexels3}
-                                alt="Styles tendance"
-                                fill
-                                className={styles.serviceImage}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                            />
-                        </div>
-                        <div className={styles.serviceContent}>
-                            <h4><FormattedMessage id="services.styles.title" /></h4>
-                            <p><FormattedMessage id="services.styles.text" /></p>
-                        </div>
-                    </div>
-
-                    {/* Service 4 */}
-                    <div className={styles.serviceCard}>
-                        <div className={styles.serviceImageWrapper}>
-                            <Image
-                                src={pexels4}
-                                alt="Expérience relaxante"
-                                fill
-                                className={styles.serviceImage}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                            />
-                        </div>
-                        <div className={styles.serviceContent}>
-                            <h4><FormattedMessage id="services.experience.title" /></h4>
-                            <p><FormattedMessage id="services.experience.text" /></p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/* LIGHTBOX */}
+            <Lightbox
+                open={open}
+                close={() => setOpen(false)}
+                index={lightboxIndex}
+                slides={allVideos.map((v) => ({
+                    type: 'video',
+                    sources: [{ src: v.src, type: 'video/mp4' }],
+                    poster: v.poster,
+                    title: v.caption,
+                    alt: v.caption,
+                }))}
+                plugins={[VideoPlugin, Thumbnails]}
+                video={{ controls: true, autoplay: false }}
+                thumbnails={{ position: 'bottom', gap: 16, border: 0, height: 80 }}
+                carousel={{ finite: false }} // ou true si tu ne veux pas de boucle
+            />
         </>
     );
 }
