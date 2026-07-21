@@ -15,7 +15,7 @@ import {
   clearAuth,
   getUserId,
 } from '../../lib/api';
-import isLoggedIn from '../../lib/api/isLoggedIn';
+import { isLoggedIn } from '../../lib/api';
 import styles from './stylesheets/Admin.module.css';
 
 // ─── Nav config ───────────────────────────────────────────
