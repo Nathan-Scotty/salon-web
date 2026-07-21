@@ -8,6 +8,12 @@ const nextConfig = {
     // Si tu as aussi des erreurs TypeScript que tu veux ignorer temporairement
     ignoreBuildErrors: true,
   },
+  experimental: {
+    bodySizeLimit: '10mb',
+  },
+  images: {
+    domains: ['images.unsplash.com'],
+  },
 };
 
 export default nextConfig;

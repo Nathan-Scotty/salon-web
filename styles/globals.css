@@ -1,0 +1,43 @@
+/* styles/globals.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface2: #222222;
+  --border: #2e2e2e;
+  --gold: #d4af37;
+  --gold-dim: #a88b28;
+  --gold-glow: rgba(212,175,55,0.18);
+  --text: #f0ece4;
+  --text-dim: #888;
+  --green: #4ade80;
+  --red: #f87171;
+  --orange: #fb923c;
+  --purple: #a78bfa;
+  --sidebar-w: 230px;
+  --sidebar-sm: 64px;
+}
+
+/* ── Global Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+/* Optional: Full page reset */
+html, body {
+  margin: 0;
+  padding: 0;
+}

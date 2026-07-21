@@ -1,179 +1,203 @@
-/* Luxury Hair Salon Styling */
-
 .navbar {
-    background-color: transparent;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 9999;
-    transition: background-color 0.5s;
-}
-
-.scrolled {
-    background-color: #1a1a1a;
-    animation: fadeInDown 0.9s ease-in;
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+  border-bottom: 1px solid transparent;
 }
 
 .navbar.scrolled {
-    background-color: #1a1a1a;
-    z-index: 9999;
+  background: rgba(15,15,15,0.92);
+  border-bottom-color: var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
+/* Pages that always have a solid background */
+.solidBg {
+  background: var(--bg);
+  border-bottom-color: var(--border);
+}
+
+/* ── Logo ── */
 .logo_container {
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
-.logo {
-    width: 120px;
-    height: auto;
+/* ── Nav links ── */
+.navbar_links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
-.menu_icon {
-    display: none;
+.navbar_link {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(240,236,228,0.75);
+  text-decoration: none;
+  padding: 0.5rem 0.85rem;
+  border-radius: 2px;
+  transition: color 0.2s, background 0.2s;
+  position: relative;
 }
 
-.open {
-    display: none;
-}
-
-.navbar .navbar_link {
-    float: left;
-    display: block;
-    color: #e5c79c;
-    text-align: center;
-    padding: 26px 15px;
-    text-decoration: none;
-    font-size: 18px;
-    transition: color 0.5s;
-}
-
-.navbar.scrolled .navbar_link {
-    color: #e5c79c;
-}
-
-.navbar.scrolled .dropbtn {
-    color: #e5c79c;
-}
-
-.navbar .navbar_link:hover {
-    color: #c49a5b;
+.navbar_link:hover {
+  color: var(--text);
 }
 
 .navbar_link.active {
-    border-bottom: 2px solid #c49a5b;
-    color: #c49a5b;
+  color: var(--gold);
 }
 
-.label {
-    color: #e5c79c;
+.navbar_link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0.85rem;
+  right: 0.85rem;
+  height: 1px;
+  background: var(--gold);
 }
 
-.label select {
-    margin-left: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
+/* ── Right section ── */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.adminPage,
-.aboutPage,
-.contactPage,
-.faqsPage,
-.services,
-.projects,
-.booking {
-    background-color: #1a1a1a;
+/* ── Locale selector ── */
+.localeWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-@media screen and (min-width: 769px) {
-    .dropdown:hover .dropdown_content {
-        display: block;
-    }
+.localeLabel {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
 }
 
-@media screen and (max-width: 768px) {
+.localeSelect {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s, color 0.2s;
+}
 
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        background-color: transparent;
-    }
+.localeSelect:hover {
+  border-color: var(--gold);
+  color: var(--text);
+}
 
-    .adminPage,
-    .aboutPage,
-    .contactPage,
-    .faqsPage,
-    .services,
-    .projects,
-    .booking {
-        background-color: #1a1a1a;
-    }
+.localeSelect option {
+  background: var(--surface);
+}
 
-    .navbar_links {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-        width: 100%;
-        padding: 15px;
-        background-color: #1f1f1f;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        z-index: 0;
-    }
+/* ── Book button ── */
+.bookBtn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0f0f0f;
+  background: var(--gold);
+  border: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
 
-    .navbar .navbar_link {
-        display: flex;
-        text-align: left;
-        padding: 15px 0;
-        padding-left: 15px;
-        color: #e5c79c;
-    }
+.bookBtn:hover {
+  background: var(--gold-dim);
+}
 
-    .navbar_link.active {
-        color: #c49a5b;
-    }
+/* ── Mobile menu icon ── */
+.menu_icon {
+  display: none;
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 22px;
+  padding: 0.5rem;
+  transition: color 0.2s;
+  z-index: 1;
+}
 
-    .menu_icon {
-        display: block;
-        cursor: pointer;
-        color: #c49a5b;
-        font-size: 24px;
-        padding: 20px;
-        transition: color 0.3s, transform 0.3s;
-        position: relative;
-        z-index: 1;
-    }
+/* ── Mobile nav ── */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 1.25rem;
+  }
 
-    .open {
-        color: #c49a5b;
-        transform: rotate(90deg);
-    }
+  .menu_icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .navbar_links {
-        display: none;
-    }
+  .navbar_links {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem 1.5rem;
+    gap: 0.25rem;
+  }
 
-    .show {
-        display: flex;
-        flex-direction: column;
-        margin-top: 50px;
-        margin-left: 2%;
-        width: 83%;
-    }
+  .navbar_links.show {
+    display: flex;
+  }
+
+  .navbar_link {
+    width: 100%;
+    padding: 0.65rem 0.5rem;
+    font-size: 13px;
+  }
+
+  .navbar_link.active::after {
+    display: none;
+  }
+
+  .navbar_link.active {
+    border-left: 2px solid var(--gold);
+    padding-left: 0.85rem;
+  }
+
+  .bookBtn {
+    display: none;
+  }
+
+  .localeLabel {
+    display: none;
+  }
 }

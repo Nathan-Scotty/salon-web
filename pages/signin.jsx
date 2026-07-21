@@ -1,8 +1,6 @@
-import SigninForm from "../components/auth/Signin";
+import Signin from '../components/auth/Signin';
 
-export default function Signin() {
-    return <>
-        <SigninForm />
-    </>
+export default function SigninPage() {
+  return <Signin />;
 }
-Signin.noLayout = true
+SigninPage.noLayout = true;

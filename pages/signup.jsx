@@ -1,9 +1,6 @@
-import SignupForm from "../components/auth/Signup";
+import Signup from '../components/auth/Signup';
 
-export default function Signup() {
-
-    return <>
-        <SignupForm />
-    </>
+export default function SignupPage() {
+  return <Signup />;
 }
-Signup.noLayout = true
+SignupPage.noLayout = true;

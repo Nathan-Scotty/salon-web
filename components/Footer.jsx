@@ -1,100 +1,107 @@
-import styles from "../styles/Footer.module.css";
-import Link from "next/link";
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import logoImg from '../public/davilas_logo.png';
-import { FormattedMessage } from "react-intl";
+import styles from '../styles/Footer.module.css';
 
 export default function Footer() {
-    return (
-        <footer className={styles.footer}>
-            <Link href="/" className={styles.logo_container}>
-                <Image src={logoImg} alt="Davilas Hair & Beauty Logo" width={85} height={85} />
-            </Link>
+  const intl = useIntl();
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
 
-            {/* USEFUL LINKS */}
-            <div className={styles.footer_links}>
-                <h1>
-                    <FormattedMessage id="footer.links.title" defaultMessage="USEFUL LINKS" />
-                </h1>
-                <ul>
-                    <li>
-                        <Link href="/booking" className={styles.footer_useful}>
-                            <FormattedMessage
-                                id="footer.links.booking"
-                                defaultMessage="Click Here To Make An Appointment"
-                            />
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/terms" className={styles.footer_useful}>
-                            <FormattedMessage
-                                id="footer.links.terms"
-                                defaultMessage="Terms & Conditions"
-                            />
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/disclaimer" className={styles.footer_useful}>
-                            <FormattedMessage
-                                id="footer.links.disclaimer"
-                                defaultMessage="Disclaimer"
-                            />
-                        </Link>
-                    </li>
-                </ul>
-            </div>
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email) { setSubscribed(true); setEmail(''); }
+  };
 
-            {/* CONTACT INFO */}
-            <div className={styles.footer_contacts}>
-                <h1>
-                    <FormattedMessage id="footer.contact.title" defaultMessage="CONTACTS" />
-                </h1>
-                <p>
-                    <FormattedMessage
-                        id="footer.contact.appointment"
-                        defaultMessage="By appointment only"
-                    />
-                </p>
-                <p>
-                    <FormattedMessage
-                        id="footer.contact.location"
-                        defaultMessage="Gatineau-Ottawa, Canada"
-                    />
-                </p>
-                <p>+1 613 710 07-54</p>
-                <p>davilasbarack@gmail.com</p>
-            </div>
+  return (
+    <footer className={styles.footer}>
+      <div className={styles.top}>
 
-            {/* SUBSCRIBE */}
-            <div className={styles.footer_subscribe}>
-                <h1>
-                    <FormattedMessage id="footer.subscribe.title" defaultMessage="SUBSCRIBE US" />
-                </h1>
-                <form>
-                    <input
-                        type="email"
-                        placeholder="Enter your email"
-                        aria-label="Email for subscription"
-                    />
-                    <button type="submit">
-                        <FormattedMessage
-                            id="footer.subscribe.button"
-                            defaultMessage="SUBSCRIBE"
-                        />
-                    </button>
-                </form>
-            </div>
+        <div className={styles.brand}>
+          <Link href="/" className={styles.logo_container}>
+            <Image src={logoImg} alt="Davilas Hair & Beauty" width={64} height={64} />
+          </Link>
+          <div>
+            <p className={styles.brandName}>Davilas</p>
+            <p className={styles.brandSub}>Hair &amp; Beauty</p>
+          </div>
+          <p className={styles.brandDesc}>
+            Premium hair care and beauty services in the Gatineau-Ottawa region.
+          </p>
+        </div>
 
-            {/* COPYRIGHT */}
-            <div className={styles.copyright}>
-                <p>
-                    <FormattedMessage
-                        id="footer.copyright"
-                        defaultMessage="© 2025 - Nathan Musoko - Developer and Designer"
-                        values={{ year: new Date().getFullYear() }}
-                    />
-                </p>
+        <div className={styles.col}>
+          <h3><FormattedMessage id="footer.links.title" /></h3>
+          <ul className={styles.linkList}>
+            <li><Link href="/"><FormattedMessage id="home" /></Link></li>
+            <li><Link href="/about"><FormattedMessage id="about" /></Link></li>
+            <li><Link href="/projects"><FormattedMessage id="projects" /></Link></li>
+            <li><Link href="/booking"><FormattedMessage id="booking" /></Link></li>
+            <li><Link href="/faqs"><FormattedMessage id="faqs" /></Link></li>
+            <li><Link href="/contact"><FormattedMessage id="contact" /></Link></li>
+          </ul>
+        </div>
+
+        <div className={styles.col}>
+          <h3><FormattedMessage id="footer.contact.title" /></h3>
+          <div className={styles.contactList}>
+            <div className={styles.contactItem}>
+              <span className={styles.contactIcon}>📍</span>
+              <span><FormattedMessage id="footer.contact.location" /></span>
             </div>
-        </footer>
-    );
+            <div className={styles.contactItem}>
+              <span className={styles.contactIcon}>📞</span>
+              <span>+1 613 710 07-54</span>
+            </div>
+            <div className={styles.contactItem}>
+              <span className={styles.contactIcon}>✉</span>
+              <span>davilasbarack@gmail.com</span>
+            </div>
+            <div className={styles.contactItem}>
+              <span className={styles.contactIcon}>🕐</span>
+              <span><FormattedMessage id="footer.contact.appointment" /></span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.col}>
+          <h3><FormattedMessage id="footer.subscribe.title" /></h3>
+          {subscribed ? (
+            <p style={{ fontSize: 13, color: 'var(--green)' }}>✓ <FormattedMessage id="footer.subscribe.success" /></p>
+          ) : (
+            <form className={styles.subscribeForm} onSubmit={handleSubscribe}>
+              <p className={styles.subscribeDesc}><FormattedMessage id="footer.subscribe.desc" /></p>
+              <input
+                className={styles.subscribeInput}
+                type="email"
+                placeholder={intl.formatMessage({ id: 'footer.subscribe.button' })}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button className={styles.subscribeBtn} type="submit">
+                <FormattedMessage id="footer.subscribe.button" />
+              </button>
+            </form>
+          )}
+        </div>
+
+      </div>
+
+      <div className={styles.divider} />
+
+      <div className={styles.bottom}>
+        <p className={styles.copyright}>
+          <FormattedMessage id="footer.copyright" values={{ year: new Date().getFullYear() }} />
+        </p>
+        <div className={styles.bottomLinks}>
+          <Link href="/terms"><FormattedMessage id="footer.terms" /></Link>
+          <Link href="/disclaimer"><FormattedMessage id="footer.disclaimer" /></Link>
+          <Link href="/contact"><FormattedMessage id="contact" /></Link>
+        </div>
+      </div>
+    </footer>
+  );
 }

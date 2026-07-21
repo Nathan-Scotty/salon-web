@@ -1,114 +1,90 @@
-import Link from "next/link";
-import styles from "../styles/Header.module.css";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useLocale } from "./LocaleProvider";
-import { FormattedMessage } from "react-intl";
+import Link from 'next/link';
+import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useLocale } from './LocaleProvider';
+import { FormattedMessage } from 'react-intl';
 import logoImg from '../public/davilas_logo.png';
+import styles from '../styles/Header.module.css';
+
+const SOLID_PAGES = ['/about', '/contact', '/faqs', '/services', '/booking', '/projects'];
 
 export default function Header() {
-    const [locale, setLocale] = useLocale();
-    const router = useRouter();
+  const [locale, setLocale] = useLocale();
+  const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
+  const [showLinks, setShowLinks] = useState(false);
 
-    const handleLocaleChange = (event) => {
-        const newLocale = event.target.value;
-        setLocale(newLocale);
-        router.push(router.pathname, router.asPath, { locale: newLocale });
-    };
+  const isSolid = SOLID_PAGES.includes(router.pathname);
 
-    const [scrolled, setScrolled] = useState(false);
-    const [showLinks, setShowLinks] = useState(false);
-    const [activeDropdown, setActiveDropdown] = useState(null);
-    const [activeLink, setActiveLink] = useState('/');
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-    useEffect(() => {
-        const scrollFunction = () => {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
-        };
+  useEffect(() => {
+    setShowLinks(false);
+  }, [router.pathname]);
 
-        window.addEventListener('scroll', scrollFunction);
+  const handleLocaleChange = (e) => {
+    const newLocale = e.target.value;
+    setLocale(newLocale);
+    router.push(router.pathname, router.asPath, { locale: newLocale });
+  };
 
-        return () => {
-            window.removeEventListener('scroll', scrollFunction);
-        };
-    }, []);
+  const isActive = (path) => router.pathname === path;
 
-    useEffect(() => {
-        setActiveLink(router.pathname);
-    }, [router.pathname]);
+  return (
+    <header>
+      <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''} ${isSolid ? styles.solidBg : ''}`}>
 
-    const toggleDropdown = (dropdownName) => {
-        setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
-    };
-    // FONCTION CLÉ : ferme le menu mobile quand on clique sur un lien
-    const handleLinkClick = () => {
-        setShowLinks(false);
-    };
+        {/* Logo */}
+        <Link href="/" className={styles.logo_container}>
+          <Image src={logoImg} alt="Davilas Hair & Beauty" width={52} height={52} />
+        </Link>
 
-    const toggleLinks = () => {
-        setShowLinks(!showLinks);
-    };
+        {/* Desktop nav */}
+        <div className={`${styles.navbar_links} ${showLinks ? styles.show : ''}`}>
+          {[
+            { href: '/',        id: 'home' },
+            { href: '/about',   id: 'about' },
+            { href: '/projects', id: 'services' },
+            { href: '/booking', id: 'booking' },
+            { href: '/faqs',    id: 'faqs' },
+            { href: '/contact', id: 'contact' },
+          ].map(({ href, id }) => (
+            <Link
+              key={href}
+              href={href}
+              className={`${styles.navbar_link} ${isActive(href) ? styles.active : ''}`}
+            >
+              <FormattedMessage id={id} />
+            </Link>
+          ))}
+        </div>
 
-    const getHeaderColorClass = () => {
-        switch (router.pathname) {
-            case '/about': return styles.aboutPage;
-            case '/contact': return styles.contactPage;
-            case '/faqs': return styles.faqsPage;
-            case '/services': return styles.services;
-            case '/booking': return styles.booking;
-            case '/projects': return styles.projects;
-            case '/admin': return styles.adminPage;
-            default: return styles.defaultPage;
-        }
-    };
+        {/* Right */}
+        <div className={styles.right}>
+          <div className={styles.localeWrap}>
+            <span className={styles.localeLabel}>Lang</span>
+            <select className={styles.localeSelect} value={locale} onChange={handleLocaleChange}>
+              <option value="en">EN</option>
+              <option value="fr">FR</option>
+            </select>
+          </div>
 
-    return (
-        <header>
-            <div className={`${styles.navbar} ${scrolled ? styles.scrolled : ''} ${getHeaderColorClass()}`}>
-                <Link href="/" className={styles.logo_container}>
-                    <Image src={logoImg} alt="Davilas Hair & Beauty Logo" width={70} height={70} />
-                </Link>
-                <div>
-                    <div className={`${styles.menu_icon} ${showLinks ? styles.open : ''}`} onClick={toggleLinks}>
-                        <FontAwesomeIcon icon={showLinks ? faTimes : faBars} />
-                    </div>
+          <Link href="/booking" className={styles.bookBtn}><FormattedMessage id="home.cta.btn" /></Link>
 
-                    <div className={`${styles.navbar_links} ${showLinks ? styles.show : ''}`}>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/' ? styles.active : ''}`} href="/" onClick={handleLinkClick}>
-                            <FormattedMessage id="home" />
-                        </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/about' ? styles.active : ''}`} href="/about" onClick={handleLinkClick}>
-                            <FormattedMessage id="about" />
-                        </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/projects' ? styles.active : ''}`} href="/projects" onClick={handleLinkClick}>
-                            <FormattedMessage id="services" />
-                        </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/booking' ? styles.active : ''}`} href="/booking" onClick={handleLinkClick}>
-                            <FormattedMessage id="booking" />
-                        </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/faqs' ? styles.active : ''}`} href="/faqs" onClick={handleLinkClick}>
-                            <FormattedMessage id="faqs" />
-                        </Link>
-                        <Link className={`${styles.navbar_link} ${activeLink === '/contact' ? styles.active : ''}`} href="/contact" onClick={handleLinkClick}>
-                            <FormattedMessage id="contact" />
-                        </Link>
-                    </div>
-                </div>
-                <label className={styles.label}>
-                    Langue:
-                    <select value={locale} onChange={handleLocaleChange}>
-                        <option value="en">English</option>
-                        <option value="fr">Français</option>
-                    </select>
-                </label>
-            </div>
-        </header>
-    );
+          {/* Mobile toggle */}
+          <div className={styles.menu_icon} onClick={() => setShowLinks(!showLinks)}>
+            <FontAwesomeIcon icon={showLinks ? faTimes : faBars} />
+          </div>
+        </div>
+
+      </nav>
+    </header>
+  );
 }

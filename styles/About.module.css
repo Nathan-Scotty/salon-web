@@ -1,0 +1,219 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 6rem 2rem 4rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 1rem;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 2rem 0 4rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  width: 60px;
+  height: 1px;
+  background: var(--border);
+}
+
+.divider span {
+  color: var(--gold);
+  font-size: 12px;
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto 5rem;
+}
+
+.valueCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.75rem;
+}
+
+.valueIcon {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.valueName {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+}
+
+.valueDesc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.stylistsSection {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+/* 
+.stylistGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.stylistCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stylistAvatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--gold-glow);
+  border: 1px solid rgba(212,175,55,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--gold);
+}
+
+.stylistName {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  color: var(--text);
+  margin: 0 0 0.4rem;
+}
+
+.stylistSpecialties {
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.stylistBio {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+} */
+
+/* ── Team ── */
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.teamCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.teamCard:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+  transform: translateY(-3px);
+}
+
+.teamImg {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  filter: brightness(0.9) grayscale(0.2);
+  transition: filter 0.3s;
+}
+
+.teamCard:hover .teamImg {
+  filter: brightness(1) grayscale(0);
+}
+
+.teamBody {
+  padding: 1.25rem;
+}
+
+.teamName {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--text);
+  margin: 0 0 0.25rem;
+}
+
+.teamRole {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.teamBio {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 2rem;
+}
