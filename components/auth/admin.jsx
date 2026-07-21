@@ -15,6 +15,7 @@ import {
   clearAuth,
   getUserId,
 } from '../../lib/api';
+import isLoggedIn from '../../lib/api/isLoggedIn';
 import styles from './stylesheets/Admin.module.css';
 
 // ─── Nav config ───────────────────────────────────────────
@@ -991,8 +992,19 @@ const SECTION_MAP = {
 
 export default function Admin() {
   const router = useRouter();
+  const [authed, setAuthed] = useState(false);
   const [section, setSection] = useState('overview');
   const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      router.replace('/signin');
+    } else {
+      setAuthed(true);
+    }
+  }, [router]);
+
+  if (!authed) return null;
 
   const handleSignout = () => {
     clearAuth();
