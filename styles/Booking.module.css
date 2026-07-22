@@ -305,3 +305,38 @@
   padding: 4rem;
   font-size: 14px;
 }
+
+.infoForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 480px;
+}
+
+.infoField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.infoLabel {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.infoInput {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.65rem 0.85rem;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.infoInput:focus { border-color: var(--gold); }
+.infoInput::placeholder { color: var(--text-dim); }

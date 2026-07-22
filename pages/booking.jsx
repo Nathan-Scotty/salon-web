@@ -1,28 +1,36 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { services as servicesApi, stylists as stylistsApi, availability as availApi, appointments as apptApi, clients, getUserId, isLoggedIn } from '../lib/api';
+import { services as servicesApi, stylists as stylistsApi, availability as availApi } from '../lib/api';
 import { useToast } from '../components/Toast';
 import styles from '../styles/Booking.module.css';
 
-const STEP_IDS = ['booking.step.service', 'booking.step.stylist', 'booking.step.slot', 'booking.step.confirm'];
+const STEP_IDS = [
+  'booking.step.info',
+  'booking.step.service',
+  'booking.step.stylist',
+  'booking.step.slot',
+  'booking.step.confirm',
+];
 
 export default function BookingPage() {
-  const toast   = useToast();
-  const router  = useRouter();
-  const intl    = useIntl();
+  const toast = useToast();
+  const intl  = useIntl();
+
   const [step, setStep]               = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [stylistList, setStylistList] = useState([]);
   const [slotList, setSlotList]       = useState([]);
-  const [selected, setSelected]       = useState({ service: null, stylist: null, slot: null });
-  const [loading, setLoading]         = useState(true);
+  const [loading, setLoading]         = useState(false);
   const [submitting, setSubmitting]   = useState(false);
   const [error, setError]             = useState('');
   const [success, setSuccess]         = useState(false);
 
+  const [info, setInfo]       = useState({ name: '', email: '', phone: '' });
+  const [selected, setSelected] = useState({ service: null, stylist: null, slot: null });
+
   useEffect(() => {
+    setLoading(true);
     Promise.all([servicesApi.getAll(true), stylistsApi.getAll()])
       .then(([s, st]) => { setServiceList(s); setStylistList(st); })
       .catch(console.error)
@@ -30,7 +38,7 @@ export default function BookingPage() {
   }, []);
 
   useEffect(() => {
-    if (step === 2 && selected.stylist) {
+    if (step === 3 && selected.stylist) {
       setLoading(true);
       availApi.getAll(selected.stylist.id, true)
         .then(setSlotList).catch(console.error).finally(() => setLoading(false));
@@ -43,38 +51,44 @@ export default function BookingPage() {
   const formatTime = (timeStr) =>
     new Date(timeStr).toLocaleTimeString(intl.locale, { hour: '2-digit', minute: '2-digit' });
 
+  const handleInfoSubmit = (e) => {
+    e.preventDefault();
+    if (!info.name || !info.email) return;
+    setStep(1);
+  };
+
   const handleConfirm = async () => {
-    if (!isLoggedIn()) { router.push('/signin'); return; }
     setSubmitting(true); setError('');
     try {
-      const userId      = Number(getUserId());
-      const clientList  = await clients.getAll();
-      const clientProfile = clientList.find(c => c.userId === userId);
-
-      if (!clientProfile) {
-        setError('Client profile not found. Please contact support.');
-        setSubmitting(false);
-        return;
-      }
-
-      await apptApi.create({
-        clientId:       clientProfile.id,
-        stylistId:      selected.stylist.id,
-        availabilityId: selected.slot.id,
-        scheduledAt:    selected.slot.date,
-        notes:          'Service: ' + selected.service.name,
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${BASE_URL}/appointments/guest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:           info.name,
+          email:          info.email,
+          phone:          info.phone,
+          stylistId:      selected.stylist.id,
+          availabilityId: selected.slot.id,
+          scheduledAt:    selected.slot.date,
+          notes:          'Service: ' + selected.service.name,
+        }),
       });
 
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Booking failed');
+
+      // Send confirmation email
       await fetch('/api/email/booking-confirmation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          clientName:  clientProfile.user?.name,
-          clientEmail: clientProfile.user?.email,
+          clientName:  data.data.clientName,
+          clientEmail: data.data.clientEmail,
           stylistName: selected.stylist?.user?.name,
           serviceName: selected.service?.name,
           date:        formatSlotDate(selected.slot),
-          time:        formatTime(selected.slot.startTime) + ' – ' + formatTime(selected.slot.endTime),
+          time:        formatTime(selected.slot.startTime) + ' - ' + formatTime(selected.slot.endTime),
         }),
       });
 
@@ -128,16 +142,66 @@ export default function BookingPage() {
       </div>
 
       <div className={styles.panel}>
-        {loading && <p className={styles.loading}><FormattedMessage id="booking.loading" /></p>}
 
-        {/* Step 0 — Service */}
-        {!loading && step === 0 && (
+        {/* Step 0 — Info */}
+        {step === 0 && (
           <>
+            <h2 className={styles.sectionTitle}><FormattedMessage id="booking.info.title" /></h2>
+            <form onSubmit={handleInfoSubmit} className={styles.infoForm}>
+              <div className={styles.infoField}>
+                <label className={styles.infoLabel}><FormattedMessage id="booking.info.name" /></label>
+                <input
+                  className={styles.infoInput}
+                  type="text"
+                  placeholder={intl.formatMessage({ id: 'booking.info.name.placeholder' })}
+                  value={info.name}
+                  onChange={e => setInfo({ ...info, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div className={styles.infoField}>
+                <label className={styles.infoLabel}><FormattedMessage id="booking.info.email" /></label>
+                <input
+                  className={styles.infoInput}
+                  type="email"
+                  placeholder={intl.formatMessage({ id: 'booking.info.email.placeholder' })}
+                  value={info.email}
+                  onChange={e => setInfo({ ...info, email: e.target.value })}
+                  required
+                />
+              </div>
+              <div className={styles.infoField}>
+                <label className={styles.infoLabel}><FormattedMessage id="booking.info.phone" /></label>
+                <input
+                  className={styles.infoInput}
+                  type="tel"
+                  placeholder={intl.formatMessage({ id: 'booking.info.phone.placeholder' })}
+                  value={info.phone}
+                  onChange={e => setInfo({ ...info, phone: e.target.value })}
+                />
+              </div>
+              <button className={styles.confirmBtn} type="submit">
+                <FormattedMessage id="booking.info.next" />
+              </button>
+            </form>
+          </>
+        )}
+
+        {loading && step > 0 && <p className={styles.loading}><FormattedMessage id="booking.loading" /></p>}
+
+        {/* Step 1 — Service */}
+        {!loading && step === 1 && (
+          <>
+            <button className={styles.backBtn} onClick={() => setStep(0)}><FormattedMessage id="booking.back" /></button>
             <h2 className={styles.sectionTitle}><FormattedMessage id="booking.choose.service" /></h2>
             <div className={styles.grid}>
               {serviceList.map((s) => (
-                <div key={s.id} className={`${styles.optionCard} ${selected.service?.id === s.id ? styles.selected : ''}`}
-                  onClick={() => { setSelected({ ...selected, service: s }); setStep(1); }}>
+                <div key={s.id}
+                  className={`${styles.optionCard} ${selected.service?.id === s.id ? styles.selected : ''}`}
+                  onClick={() => { setSelected({ ...selected, service: s }); setStep(2); }}>
+                  {s.imageUrl && (
+                    <img src={s.imageUrl} alt={s.name} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: '3px 3px 0 0', display: 'block', marginBottom: '0.75rem' }} />
+                  )}
                   <p className={styles.optionName}>{s.name}</p>
                   <p className={styles.optionSub}>${Number(s.price).toFixed(2)} · {s.durationMin} min</p>
                 </div>
@@ -146,15 +210,19 @@ export default function BookingPage() {
           </>
         )}
 
-        {/* Step 1 — Stylist */}
-        {!loading && step === 1 && (
+        {/* Step 2 — Stylist */}
+        {!loading && step === 2 && (
           <>
-            <button className={styles.backBtn} onClick={() => setStep(0)}><FormattedMessage id="booking.back" /></button>
+            <button className={styles.backBtn} onClick={() => setStep(1)}><FormattedMessage id="booking.back" /></button>
             <h2 className={styles.sectionTitle}><FormattedMessage id="booking.choose.stylist" /></h2>
             <div className={styles.grid}>
               {stylistList.map((st) => (
-                <div key={st.id} className={`${styles.optionCard} ${selected.stylist?.id === st.id ? styles.selected : ''}`}
-                  onClick={() => { setSelected({ ...selected, stylist: st }); setStep(2); }}>
+                <div key={st.id}
+                  className={`${styles.optionCard} ${selected.stylist?.id === st.id ? styles.selected : ''}`}
+                  onClick={() => { setSelected({ ...selected, stylist: st }); setStep(3); }}>
+                  {st.user?.avatarUrl && (
+                    <img src={st.user.avatarUrl} alt={st.user?.name} style={{ width: 56, height: 56, borderRadius: '50%', objectFit: 'cover', marginBottom: '0.75rem', border: '1px solid var(--border)' }} />
+                  )}
                   <p className={styles.optionName}>{st.user?.name}</p>
                   <p className={styles.optionSub}>{st.specialties || intl.formatMessage({ id: 'booking.stylist.specialties' })}</p>
                 </div>
@@ -163,20 +231,21 @@ export default function BookingPage() {
           </>
         )}
 
-        {/* Step 2 — Slot */}
-        {!loading && step === 2 && (
+        {/* Step 3 — Slot */}
+        {!loading && step === 3 && (
           <>
-            <button className={styles.backBtn} onClick={() => setStep(1)}><FormattedMessage id="booking.back" /></button>
+            <button className={styles.backBtn} onClick={() => setStep(2)}><FormattedMessage id="booking.back" /></button>
             <h2 className={styles.sectionTitle}><FormattedMessage id="booking.choose.slot" /></h2>
             {slotList.length === 0
               ? <p className={styles.empty}><FormattedMessage id="booking.noSlots" /></p>
               : (
                 <div className={styles.slotGrid}>
                   {slotList.map((slot) => (
-                    <div key={slot.id} className={`${styles.slot} ${selected.slot?.id === slot.id ? styles.selected : ''}`}
-                      onClick={() => { setSelected({ ...selected, slot }); setStep(3); }}>
+                    <div key={slot.id}
+                      className={`${styles.slot} ${selected.slot?.id === slot.id ? styles.selected : ''}`}
+                      onClick={() => { setSelected({ ...selected, slot }); setStep(4); }}>
                       <p className={styles.slotDate}>{formatSlotDate(slot)}</p>
-                      <p className={styles.slotTime}>{formatTime(slot.startTime)} – {formatTime(slot.endTime)}</p>
+                      <p className={styles.slotTime}>{formatTime(slot.startTime)} - {formatTime(slot.endTime)}</p>
                     </div>
                   ))}
                 </div>
@@ -185,24 +254,22 @@ export default function BookingPage() {
           </>
         )}
 
-        {/* Step 3 — Confirm */}
-        {step === 3 && (
+        {/* Step 4 — Confirm */}
+        {step === 4 && (
           <>
-            <button className={styles.backBtn} onClick={() => setStep(2)}><FormattedMessage id="booking.back" /></button>
+            <button className={styles.backBtn} onClick={() => setStep(3)}><FormattedMessage id="booking.back" /></button>
             <h2 className={styles.sectionTitle}><FormattedMessage id="booking.confirm.title" /></h2>
             <div className={styles.summary}>
+              <div className={styles.summaryRow}><span><FormattedMessage id="booking.info.name" /></span><span>{info.name}</span></div>
+              <div className={styles.summaryRow}><span><FormattedMessage id="booking.info.email" /></span><span>{info.email}</span></div>
+              {info.phone && <div className={styles.summaryRow}><span><FormattedMessage id="booking.info.phone" /></span><span>{info.phone}</span></div>}
               <div className={styles.summaryRow}><span><FormattedMessage id="booking.confirm.service" /></span><span>{selected.service?.name}</span></div>
               <div className={styles.summaryRow}><span><FormattedMessage id="booking.confirm.stylist" /></span><span>{selected.stylist?.user?.name}</span></div>
               <div className={styles.summaryRow}><span><FormattedMessage id="booking.confirm.date" /></span><span>{selected.slot && formatSlotDate(selected.slot)}</span></div>
-              <div className={styles.summaryRow}><span><FormattedMessage id="booking.confirm.time" /></span><span>{selected.slot && formatTime(selected.slot.startTime) + ' – ' + formatTime(selected.slot.endTime)}</span></div>
+              <div className={styles.summaryRow}><span><FormattedMessage id="booking.confirm.time" /></span><span>{selected.slot && formatTime(selected.slot.startTime) + ' - ' + formatTime(selected.slot.endTime)}</span></div>
               <div className={styles.summaryRow}><span><FormattedMessage id="booking.confirm.price" /></span><span>${Number(selected.service?.price).toFixed(2)}</span></div>
             </div>
             {error && <p className={styles.error}>{error}</p>}
-            {!isLoggedIn() && (
-              <p className={styles.error}>
-                <FormattedMessage id="booking.signin.required" /> <Link href="/signin" style={{ color: 'var(--gold)' }}><FormattedMessage id="booking.signin.link" /></Link>
-              </p>
-            )}
             <button className={styles.confirmBtn} onClick={handleConfirm} disabled={submitting}>
               {submitting ? <FormattedMessage id="booking.confirming" /> : <FormattedMessage id="booking.confirm.btn" />}
             </button>

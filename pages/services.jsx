@@ -29,6 +29,11 @@ export default function ServicesPage() {
         <div className={styles.grid}>
           {serviceList.map((s) => (
             <div key={s.id} className={styles.card}>
+              {s.imageUrl && (
+                <div style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden', borderRadius: '3px 3px 0 0', marginBottom: '1rem' }}>
+                  <img src={s.imageUrl} alt={s.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              )}
               <div className={styles.cardTop}>
                 <h2 className={styles.serviceName}>{s.name}</h2>
                 <span className={styles.price}>${Number(s.price).toFixed(2)}</span>

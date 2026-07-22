@@ -27,19 +27,13 @@ export default function Footer() {
             <p className={styles.brandName}>Davilas</p>
             <p className={styles.brandSub}>Hair &amp; Beauty</p>
           </div>
-          <p className={styles.brandDesc}>
-            Premium hair care and beauty services in the Gatineau-Ottawa region.
-          </p>
         </div>
 
         <div className={styles.col}>
           <h3><FormattedMessage id="footer.links.title" /></h3>
           <ul className={styles.linkList}>
-            <li><Link href="/"><FormattedMessage id="home" /></Link></li>
-            <li><Link href="/about"><FormattedMessage id="about" /></Link></li>
             <li><Link href="/projects"><FormattedMessage id="projects" /></Link></li>
             <li><Link href="/booking"><FormattedMessage id="booking" /></Link></li>
-            <li><Link href="/faqs"><FormattedMessage id="faqs" /></Link></li>
             <li><Link href="/contact"><FormattedMessage id="contact" /></Link></li>
           </ul>
         </div>

@@ -24,18 +24,18 @@ const PLACEHOLDER_GALLERY = [
 const PLACEHOLDER_BEFORE_AFTER = [
   {
     before: 'https://images.unsplash.com/photo-1595959183082-7b570b7e08e4?w=400&q=80',
-    after:  'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80',
-    title:  'Balayage Transformation',
+    after: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80',
+    title: 'Balayage Transformation',
   },
   {
     before: 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80',
-    after:  'https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?w=400&q=80',
-    title:  'Color Correction',
+    after: 'https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?w=400&q=80',
+    title: 'Color Correction',
   },
   {
     before: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&q=80',
-    after:  'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=400&q=80',
-    title:  'Keratin Treatment',
+    after: 'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=400&q=80',
+    title: 'Keratin Treatment',
   },
 ];
 
@@ -47,16 +47,16 @@ const TESTIMONIALS = [
 
 const STATS = [
   { num: '500+', labelId: 'home.stats.clients' },
-  { num: '8+',   labelId: 'home.stats.years' },
-  { num: '15+',  labelId: 'home.stats.services' },
+  { num: '8+', labelId: 'home.stats.years' },
+  { num: '15+', labelId: 'home.stats.services' },
   { num: '100%', labelId: 'home.stats.satisfaction' },
 ];
 
 export default function Home() {
-  const [serviceList, setServiceList]       = useState([]);
-  const [galleryPosts, setGalleryPosts]     = useState([]);
-  const [beforeAfterPosts, setBAP]          = useState([]);
-  const [stylistList, setStylistList]       = useState([]);
+  const [serviceList, setServiceList] = useState([]);
+  const [galleryPosts, setGalleryPosts] = useState([]);
+  const [beforeAfterPosts, setBAP] = useState([]);
+  const [stylistList, setStylistList] = useState([]);
 
   useEffect(() => {
     servicesApi.getAll(true).then(setServiceList).catch(console.error);
@@ -66,15 +66,15 @@ export default function Home() {
   }, []);
 
   const placeholderServices = [
-    { id: 1, name: 'Balayage',        price: 150, durationMin: 120 },
+    { id: 1, name: 'Balayage', price: 150, durationMin: 120 },
     { id: 2, name: 'Color Treatment', price: 120, durationMin: 90 },
-    { id: 3, name: 'Precision Cut',   price: 80,  durationMin: 60 },
-    { id: 4, name: 'Keratin',         price: 200, durationMin: 150 },
+    { id: 3, name: 'Precision Cut', price: 80, durationMin: 60 },
+    { id: 4, name: 'Keratin', price: 200, durationMin: 150 },
   ];
 
-  const displayServices   = serviceList.length   > 0 ? serviceList.slice(0, 4)   : placeholderServices;
-  const displayBA         = beforeAfterPosts.length > 0 ? beforeAfterPosts.slice(0, 3) : null;
-  const displayGallery    = galleryPosts.length > 0
+  const displayServices = serviceList.length > 0 ? serviceList.slice(0, 4) : placeholderServices;
+  const displayBA = beforeAfterPosts.length > 0 ? beforeAfterPosts.slice(0, 3) : null;
+  const displayGallery = galleryPosts.length > 0
     ? galleryPosts.slice(0, 7).flatMap(p => p.media?.filter(m => m.type === 'IMAGE').slice(0, 1).map(m => ({ src: m.url, caption: p.title })) || [])
     : PLACEHOLDER_GALLERY;
 
@@ -92,7 +92,6 @@ export default function Home() {
           </h1>
           <p className={styles.heroSub}><FormattedMessage id="home.hero.sub" /></p>
           <div className={styles.heroBtns}>
-            <Link href="/booking" className={styles.btnPrimary}><FormattedMessage id="home.hero.btn.book" /></Link>
             <Link href="/projects" className={styles.btnOutline}><FormattedMessage id="home.hero.btn.gallery" /></Link>
           </div>
         </div>
@@ -124,9 +123,11 @@ export default function Home() {
           <div className={styles.servicesGrid}>
             {displayServices.map((s, i) => (
               <Link key={s.id} href="/booking" className={styles.serviceCard}>
-                <div className={styles.serviceCardImgWrap}>
-                  <img src={SERVICE_IMAGES[i % SERVICE_IMAGES.length]} alt={s.name} className={styles.serviceCardImg} />
-                </div>
+                {s.imageUrl && (
+                  <div style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden', borderRadius: '3px 3px 0 0', marginBottom: '1rem' }}>
+                    <img src={s.imageUrl} alt={s.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
                 <div className={styles.serviceCardBody}>
                   <div className={styles.serviceCardTop}>
                     <span className={styles.serviceName}>{s.name}</span>
@@ -156,17 +157,17 @@ export default function Home() {
             {(displayBA || PLACEHOLDER_BEFORE_AFTER).map((item, i) => {
               const isDynamic = !!displayBA;
               const before = isDynamic ? item.media?.[0]?.url : item.before;
-              const after  = isDynamic ? item.media?.[1]?.url : item.after;
-              const title  = isDynamic ? item.title : item.title;
+              const after = isDynamic ? item.media?.[1]?.url : item.after;
+              const title = isDynamic ? item.title : item.title;
               return (
                 <div key={i} className={styles.beforeAfterCard}>
                   <div className={styles.beforeAfterImgs}>
                     {before ? <img src={before} alt="Before" className={styles.beforeAfterImg} /> : <div className={styles.beforeAfterImg} style={{ background: 'var(--surface2)' }} />}
-                    {after  ? <img src={after}  alt="After"  className={styles.beforeAfterImg} /> : <div className={styles.beforeAfterImg} style={{ background: 'var(--surface2)' }} />}
+                    {after ? <img src={after} alt="After" className={styles.beforeAfterImg} /> : <div className={styles.beforeAfterImg} style={{ background: 'var(--surface2)' }} />}
                   </div>
                   <div className={styles.beforeAfterLabel}>
-                    <span><FormattedMessage id="home.beforeAfter.label.before" /></span>
                     <span><FormattedMessage id="home.beforeAfter.label.after" /></span>
+                    <span><FormattedMessage id="home.beforeAfter.label.before" /></span>
                   </div>
                   <div className={styles.beforeAfterInfo}>
                     <p className={styles.beforeAfterTitle}>{title}</p>
@@ -210,7 +211,6 @@ export default function Home() {
           <p className={styles.interiorEyebrow}><FormattedMessage id="home.interior.eyebrow" /></p>
           <h2 className={styles.interiorTitle}><FormattedMessage id="home.interior.title" /></h2>
           <p className={styles.interiorSub}><FormattedMessage id="home.interior.sub" /></p>
-          <Link href="/booking" className={styles.btnPrimary}><FormattedMessage id="home.interior.btn" /></Link>
         </div>
       </section>
 

@@ -20,15 +20,15 @@ import styles from './stylesheets/Admin.module.css';
 
 // ─── Nav config ───────────────────────────────────────────
 const NAV = [
-  { key: 'overview',      label: 'Overview',      icon: '◈' },
-  { key: 'appointments',  label: 'Appointments',  icon: '📅' },
-  { key: 'availability',  label: 'Availability',  icon: '🕐' },
-  { key: 'services',      label: 'Services',      icon: '✂' },
-  { key: 'clients',       label: 'Clients',       icon: '👤' },
-  { key: 'payments',      label: 'Payments',      icon: '💳' },
-  { key: 'products',      label: 'Products',      icon: '🧴' },
-  { key: 'posts',         label: 'Gallery Posts', icon: '🖼' },
-  { key: 'stylists',      label: 'Stylists',      icon: '💇' },
+  { key: 'overview', label: 'Overview', icon: '◈' },
+  { key: 'appointments', label: 'Appointments', icon: '📅' },
+  { key: 'availability', label: 'Availability', icon: '🕐' },
+  { key: 'services', label: 'Services', icon: '✂' },
+  { key: 'clients', label: 'Clients', icon: '👤' },
+  { key: 'payments', label: 'Payments', icon: '💳' },
+  { key: 'products', label: 'Products', icon: '🧴' },
+  { key: 'posts', label: 'Gallery Posts', icon: '🖼' },
+  { key: 'stylists', label: 'Stylists', icon: '💇' },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────
@@ -210,7 +210,7 @@ function Appointments() {
                         value={a.status}
                         onChange={(e) => updateStatus(a.id, e.target.value)}
                       >
-                        {['PENDING','CONFIRMED','CANCELLED','COMPLETED','NO_SHOW'].map(s => (
+                        {['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED', 'NO_SHOW'].map(s => (
                           <option key={s} value={s}>{s}</option>
                         ))}
                       </select>
@@ -400,6 +400,16 @@ function Services() {
               <tbody>
                 {list.map(s => (
                   <tr key={s.id}>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        {s.imageUrl ? (
+                          <img src={s.imageUrl} alt={s.name} style={{ width: 44, height: 44, borderRadius: 3, objectFit: 'cover', border: '1px solid var(--border)', flexShrink: 0 }} />
+                        ) : (
+                          <div style={{ width: 44, height: 44, borderRadius: 3, background: 'var(--surface2)', border: '1px solid var(--border)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>✂</div>
+                        )}
+                        <span>{s.name}</span>
+                      </div>
+                    </td>
                     <td>{s.name}</td>
                     <td>${Number(s.price).toFixed(2)}</td>
                     <td>{s.durationMin} min</td>
@@ -433,6 +443,16 @@ function Services() {
             <div className={styles.field}>
               <label className={styles.label}>Name</label>
               <input className={styles.input} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="e.g. Balayage" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Service Photo</label>
+              <UploadButton
+                label="Upload Photo"
+                onUpload={(result) => setForm({ ...form, imageUrl: result.url })}
+              />
+              {form.imageUrl && (
+                <img src={form.imageUrl} alt="Preview" style={{ width: '100%', borderRadius: 3, marginTop: '0.75rem', border: '1px solid var(--border)', aspectRatio: '4/3', objectFit: 'cover' }} />
+              )}
             </div>
             <div className={styles.field}>
               <label className={styles.label}>Description</label>
@@ -554,7 +574,7 @@ function Products() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ name: '', description: '', price: '', stock: '0', isActive: true });
+  const [form, setForm] = useState({ name: '', description: '', price: '', durationMin: '', isActive: true, imageUrl: '' });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -565,13 +585,13 @@ function Products() {
 
   useEffect(() => { load(); }, [load]);
 
-  const openCreate = () => { setEditing(null); setForm({ name: '', description: '', price: '', stock: '0', isActive: true }); setShowModal(true); };
-  const openEdit = (p) => { setEditing(p); setForm({ name: p.name, description: p.description || '', price: p.price, stock: p.stock, isActive: p.isActive }); setShowModal(true); };
+  const openCreate = () => { setEditing(null); setForm({ name: '', description: '', price: '', durationMin: '', isActive: true, imageUrl: '' }); setShowModal(true); };
+  const openEdit = (s) => { setEditing(s); setForm({ name: s.name, description: s.description || '', price: s.price, durationMin: s.durationMin, isActive: s.isActive, imageUrl: s.imageUrl || '' }); setShowModal(true); };
 
   const handleSave = async () => {
     setSaving(true); setError('');
     try {
-      const payload = { ...form, price: Number(form.price), stock: Number(form.stock) };
+      const payload = { ...form, price: Number(form.price), durationMin: Number(form.durationMin) };
       if (editing) await productsApi.update(editing.id, payload);
       else await productsApi.create(payload);
       setShowModal(false); load();
@@ -979,15 +999,15 @@ function StylistsAdmin() {
 // ════════════════════════════════════════════════════════════
 
 const SECTION_MAP = {
-  overview:     <Overview />,
+  overview: <Overview />,
   appointments: <Appointments />,
   availability: <Availability />,
-  services:     <Services />,
-  clients:      <Clients />,
-  payments:     <Payments />,
-  products:     <Products />,
-  posts:        <Posts />,
-  stylists:     <StylistsAdmin />,
+  services: <Services />,
+  clients: <Clients />,
+  payments: <Payments />,
+  products: <Products />,
+  posts: <Posts />,
+  stylists: <StylistsAdmin />,
 };
 
 export default function Admin() {
