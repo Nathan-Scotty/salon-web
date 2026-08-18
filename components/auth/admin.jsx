@@ -1015,6 +1015,7 @@ export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [section, setSection] = useState('overview');
   const [collapsed, setCollapsed] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     if (!isLoggedIn()) {
@@ -1083,22 +1084,56 @@ export default function Admin() {
       </main>
 
       {/* ── Bottom nav — mobile only ── */}
-      <nav className={styles.bottomNav} style={{ display: 'none' }}>
-        {NAV.map(item => (
-          <button
-            key={item.key}
-            className={`${styles.bottomNavItem} ${section === item.key ? styles.active : ''}`}
-            onClick={() => setSection(item.key)}
-          >
-            <span className={styles.bottomNavIcon}>{item.icon}</span>
-            {item.label}
-          </button>
-        ))}
-        <button className={`${styles.bottomNavItem}`} onClick={handleSignout}>
+      <nav className={styles.bottomNav}>
+        {/* Hamburger */}
+        <button
+          className={`${styles.bottomNavItem} ${showMobileMenu ? styles.active : ''}`}
+          onClick={() => setShowMobileMenu(!showMobileMenu)}
+          style={{ flex: 'none', width: 64 }}
+        >
+          <span className={styles.bottomNavIcon}>{showMobileMenu ? '✕' : '☰'}</span>
+        </button>
+
+        {/* Current section name */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', paddingLeft: '0.75rem' }}>
+          <span style={{ fontSize: 13, color: 'var(--text)', fontFamily: 'DM Sans, sans-serif', fontWeight: 500 }}>
+            {activeNav?.label}
+          </span>
+        </div>
+
+        {/* Sign out */}
+        <button className={styles.bottomNavItem} onClick={handleSignout} style={{ flex: 'none', width: 64 }}>
           <span className={styles.bottomNavIcon}>↩</span>
-          Sign Out
         </button>
       </nav>
+
+      {/* ── Mobile slide-up menu ── */}
+      {showMobileMenu && (
+        <div style={{
+          position: 'fixed', bottom: 64, left: 0, right: 0,
+          background: 'var(--surface)', borderTop: '1px solid var(--border)',
+          zIndex: 199, display: 'flex', flexDirection: 'column', padding: '0.5rem 0',
+          boxShadow: '0 -4px 24px rgba(0,0,0,0.4)',
+        }}>
+          {NAV.map(item => (
+            <button
+              key={item.key}
+              onClick={() => { setSection(item.key); setShowMobileMenu(false); }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '1rem',
+                padding: '0.85rem 1.5rem', background: 'none', border: 'none',
+                color: section === item.key ? 'var(--gold)' : 'var(--text-dim)',
+                fontFamily: 'DM Sans, sans-serif', fontSize: 14,
+                borderLeft: section === item.key ? '3px solid var(--gold)' : '3px solid transparent',
+                cursor: 'pointer', textAlign: 'left', width: '100%',
+              }}
+            >
+              <span style={{ fontSize: 18, width: 24 }}>{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
