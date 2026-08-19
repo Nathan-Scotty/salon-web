@@ -1,41 +1,32 @@
-import fs from 'fs';
-import path from 'path';
+export default async function handler(req, res) {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
-const SUBS_FILE = path.join(process.cwd(), 'push-subscriptions.json');
-
-function loadSubs() {
-  try {
-    if (fs.existsSync(SUBS_FILE)) {
-      return JSON.parse(fs.readFileSync(SUBS_FILE, 'utf8'));
-    }
-  } catch {}
-  return [];
-}
-
-function saveSubs(subs) {
-  fs.writeFileSync(SUBS_FILE, JSON.stringify(subs, null, 2));
-}
-
-export default function handler(req, res) {
   if (req.method === 'POST') {
-    const subscription = req.body;
-    if (!subscription?.endpoint) {
-      return res.status(400).json({ error: 'Invalid subscription' });
+    try {
+      const r = await fetch(`${BASE_URL}/push/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body),
+      });
+      const data = await r.json();
+      return res.status(r.status).json(data);
+    } catch (e) {
+      return res.status(500).json({ error: 'Failed to subscribe' });
     }
-    const subs = loadSubs();
-    const exists = subs.find(s => s.endpoint === subscription.endpoint);
-    if (!exists) {
-      subs.push(subscription);
-      saveSubs(subs);
-    }
-    return res.status(201).json({ message: 'Subscribed' });
   }
 
   if (req.method === 'DELETE') {
-    const { endpoint } = req.body;
-    const subs = loadSubs().filter(s => s.endpoint !== endpoint);
-    saveSubs(subs);
-    return res.json({ message: 'Unsubscribed' });
+    try {
+      const r = await fetch(`${BASE_URL}/push/subscribe`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body),
+      });
+      const data = await r.json();
+      return res.status(r.status).json(data);
+    } catch (e) {
+      return res.status(500).json({ error: 'Failed to unsubscribe' });
+    }
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
