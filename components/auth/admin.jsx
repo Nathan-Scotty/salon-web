@@ -18,6 +18,7 @@ import {
 import { isLoggedIn } from '../../lib/api';
 import styles from './stylesheets/Admin.module.css';
 import usePushNotifications from '../../hooks/usePushNotifications';
+import useRealtimeAdmin from '../../hooks/useRealtimeAdmin';
 
 // ─── Nav config ───────────────────────────────────────────
 const NAV = [
@@ -1140,6 +1141,13 @@ export default function Admin() {
   const [collapsed, setCollapsed] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { supported, subscribed, loading: pushLoading, subscribe, unsubscribe } = usePushNotifications();
+  const toast = useToast();
+
+  useRealtimeAdmin({
+    onNewAppointment: (data) => {
+      toast.success(`📅 Nouveau rendez-vous — ${data.clientName}`);
+    },
+  });
 
   useEffect(() => {
     if (!isLoggedIn()) {
