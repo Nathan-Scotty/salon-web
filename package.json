@@ -39,9 +39,11 @@
     "slick-carousel": "^1.8.1",
     "swiper": "^12.1.4",
     "thumbs": "^0.0.0",
+    "web-push": "^3.6.7",
     "yet-another-react-lightbox": "^3.29.1"
   },
   "devDependencies": {
+    "@types/web-push": "^3.6.4",
     "eslint": "^8",
     "eslint-config-next": "^16.2.4"
   }

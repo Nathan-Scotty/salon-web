@@ -55,6 +55,7 @@ export default function Header() {
             { href: '/booking', id: 'booking' },
             { href: '/faqs',    id: 'faqs' },
             { href: '/contact', id: 'contact' },
+            { href: '/store', id: 'store' },
           ].map(({ href, id }) => (
             <Link
               key={href}

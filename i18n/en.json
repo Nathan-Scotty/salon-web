@@ -185,5 +185,6 @@
   "signup.btn": "Create Account",
   "signup.loading": "Creating account...",
   "signup.footer": "Already have an account?",
-  "signup.footer.link": "Sign in"
+  "signup.footer.link": "Sign in",
+  "store": "Store"
 }

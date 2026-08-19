@@ -585,13 +585,22 @@ function Products() {
 
   useEffect(() => { load(); }, [load]);
 
-  const openCreate = () => { setEditing(null); setForm({ name: '', description: '', price: '', durationMin: '', isActive: true, imageUrl: '' }); setShowModal(true); };
-  const openEdit = (s) => { setEditing(s); setForm({ name: s.name, description: s.description || '', price: s.price, durationMin: s.durationMin, isActive: s.isActive, imageUrl: s.imageUrl || '' }); setShowModal(true); };
+  const openCreate = () => {
+    setEditing(null);
+    setForm({ name: '', description: '', price: '', stock: '0', isActive: true, imageUrl: '' });
+    setShowModal(true);
+  };
+
+  const openEdit = (p) => {
+    setEditing(p);
+    setForm({ name: p.name, description: p.description || '', price: p.price, stock: p.stock, isActive: p.isActive, imageUrl: p.imageUrl || '' });
+    setShowModal(true);
+  };
 
   const handleSave = async () => {
     setSaving(true); setError('');
     try {
-      const payload = { ...form, price: Number(form.price), durationMin: Number(form.durationMin) };
+      const payload = { ...form, price: Number(form.price), stock: Number(form.stock) };
       if (editing) await productsApi.update(editing.id, payload);
       else await productsApi.create(payload);
       setShowModal(false); load();
@@ -623,7 +632,16 @@ function Products() {
               <tbody>
                 {list.map(p => (
                   <tr key={p.id}>
-                    <td>{p.name}</td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        {p.imageUrl ? (
+                          <img src={p.imageUrl} alt={p.name} style={{ width: 44, height: 44, borderRadius: 3, objectFit: 'cover', border: '1px solid var(--border)', flexShrink: 0 }} />
+                        ) : (
+                          <div style={{ width: 44, height: 44, borderRadius: 3, background: 'var(--surface2)', border: '1px solid var(--border)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>🧴</div>
+                        )}
+                        <span>{p.name}</span>
+                      </div>
+                    </td>
                     <td>${Number(p.price).toFixed(2)}</td>
                     <td>{p.stock}</td>
                     <td><span className={`${styles.badge} ${p.isActive ? styles.confirmed : styles.cancelled}`}>{p.isActive ? 'Active' : 'Inactive'}</span></td>
@@ -656,6 +674,16 @@ function Products() {
             <div className={styles.field}>
               <label className={styles.label}>Name</label>
               <input className={styles.input} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Product name" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Product Photo</label>
+              <UploadButton
+                label="Upload Photo"
+                onUpload={(result) => setForm({ ...form, imageUrl: result.url })}
+              />
+              {form.imageUrl && (
+                <img src={form.imageUrl} alt="Preview" style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', borderRadius: 3, marginTop: '0.75rem', border: '1px solid var(--border)' }} />
+              )}
             </div>
             <div className={styles.field}>
               <label className={styles.label}>Description</label>
@@ -896,12 +924,61 @@ function Posts() {
 // ─── Stylists Management ───────────────────────────────────
 function StylistsAdmin() {
   const toast = useToast();
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createForm, setCreateForm] = useState({ name: '', email: '', password: '', phone: '', bio: '', specialties: '' });
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState('');
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ bio: '', specialties: '', avatarUrl: '' });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  const handleCreate = async () => {
+    setCreating(true); setCreateError('');
+    try {
+      // 1 — Create user
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('authToken');
+
+      const userRes = await fetch(`${BASE_URL}/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: createForm.name,
+          email: createForm.email,
+          passwordHash: createForm.password,
+          phone: createForm.phone,
+          role: 'STYLIST',
+        }),
+      });
+      const userData = await userRes.json();
+      if (!userRes.ok) throw new Error(userData.error || 'Failed to create user');
+
+      // 2 — Create stylist profile
+      const stylistRes = await fetch(`${BASE_URL}/stylists`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          userId: userData.data.id,
+          bio: createForm.bio,
+          specialties: createForm.specialties,
+        }),
+      });
+      if (!stylistRes.ok) throw new Error('Failed to create stylist profile');
+
+      setShowCreateModal(false);
+      setCreateForm({ name: '', email: '', password: '', phone: '', bio: '', specialties: '' });
+      load();
+      toast.success('Stylist created successfully.');
+    } catch (e) {
+      setCreateError(e.message);
+      toast.error('Failed to create stylist.');
+    } finally {
+      setCreating(false);
+    }
+  };
 
   const load = useCallback(() => {
     setLoading(true);
@@ -929,6 +1006,7 @@ function StylistsAdmin() {
     <>
       <div className={styles.toolbar}>
         <h2 className={styles.toolbarTitle}>Stylists</h2>
+        <button className={styles.btnPrimary} onClick={() => setShowCreateModal(true)}>+ Add Stylist</button>
       </div>
 
       {loading && <p className={styles.loading}>Loading...</p>}
@@ -987,6 +1065,50 @@ function StylistsAdmin() {
               <textarea className={styles.textarea} value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} placeholder="Tell clients about this stylist..." />
             </div>
             {error && <p className={styles.error}>{error}</p>}
+          </div>
+        </Modal>
+      )}
+      {showCreateModal && (
+        <Modal
+          title="Add New Stylist"
+          onClose={() => setShowCreateModal(false)}
+          footer={
+            <>
+              <button className={styles.btnOutline} onClick={() => setShowCreateModal(false)}>Cancel</button>
+              <button className={styles.btnPrimary} onClick={handleCreate} disabled={creating}>
+                {creating ? 'Creating...' : 'Create Stylist'}
+              </button>
+            </>
+          }
+        >
+          <div className={styles.form}>
+            <div className={styles.formRow}>
+              <div className={styles.field}>
+                <label className={styles.label}>Full Name</label>
+                <input className={styles.input} value={createForm.name} onChange={e => setCreateForm({ ...createForm, name: e.target.value })} placeholder="Stylist name" />
+              </div>
+              <div className={styles.field}>
+                <label className={styles.label}>Phone</label>
+                <input className={styles.input} value={createForm.phone} onChange={e => setCreateForm({ ...createForm, phone: e.target.value })} placeholder="+1 (000) 000-0000" />
+              </div>
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Email</label>
+              <input className={styles.input} type="email" value={createForm.email} onChange={e => setCreateForm({ ...createForm, email: e.target.value })} placeholder="stylist@davilas.com" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Password</label>
+              <input className={styles.input} type="password" value={createForm.password} onChange={e => setCreateForm({ ...createForm, password: e.target.value })} placeholder="Temporary password" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Specialties</label>
+              <input className={styles.input} value={createForm.specialties} onChange={e => setCreateForm({ ...createForm, specialties: e.target.value })} placeholder="e.g. Balayage, Color Correction" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Bio</label>
+              <textarea className={styles.textarea} value={createForm.bio} onChange={e => setCreateForm({ ...createForm, bio: e.target.value })} placeholder="Tell clients about this stylist..." />
+            </div>
+            {createError && <p className={styles.error}>{createError}</p>}
           </div>
         </Modal>
       )}
@@ -1089,7 +1211,7 @@ export default function Admin() {
         <button
           className={`${styles.bottomNavItem} ${showMobileMenu ? styles.active : ''}`}
           onClick={() => setShowMobileMenu(!showMobileMenu)}
-          style={{ flex: 'none', width: 64 }}
+          style={{ flex: 'none', width: 64, cursor: 'pointer' }}
         >
           <span className={styles.bottomNavIcon}>{showMobileMenu ? '✕' : '☰'}</span>
         </button>
@@ -1102,7 +1224,11 @@ export default function Admin() {
         </div>
 
         {/* Sign out */}
-        <button className={styles.bottomNavItem} onClick={handleSignout} style={{ flex: 'none', width: 64 }}>
+        <button
+          className={styles.bottomNavItem}
+          onClick={handleSignout}
+          style={{ flex: 'none', width: 64, cursor: 'pointer' }}
+        >
           <span className={styles.bottomNavIcon}>↩</span>
         </button>
       </nav>
@@ -1110,9 +1236,16 @@ export default function Admin() {
       {/* ── Mobile slide-up menu ── */}
       {showMobileMenu && (
         <div style={{
-          position: 'fixed', bottom: 64, left: 0, right: 0,
-          background: 'var(--surface)', borderTop: '1px solid var(--border)',
-          zIndex: 199, display: 'flex', flexDirection: 'column', padding: '0.5rem 0',
+          position: 'fixed',
+          bottom: 64,
+          left: 0,
+          right: 0,
+          background: 'var(--surface)',
+          borderTop: '1px solid var(--border)',
+          zIndex: 199,
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '0.5rem 0',
           boxShadow: '0 -4px 24px rgba(0,0,0,0.4)',
         }}>
           {NAV.map(item => (
