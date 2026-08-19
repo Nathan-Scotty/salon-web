@@ -15,13 +15,13 @@ function buildWhatsAppMessage(cart) {
 
 export default function StorePage() {
   const [productList, setProductList] = useState([]);
-  const [loading, setLoading]         = useState(true);
-  const [cart, setCart]               = useState([]);
-  const [cartOpen, setCartOpen]       = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState([]);
+  const [cartOpen, setCartOpen] = useState(false);
   const [showEmailForm, setShowEmailForm] = useState(false);
-  const [emailInfo, setEmailInfo]     = useState({ name: '', email: '', phone: '' });
-  const [sending, setSending]         = useState(false);
-  const [sent, setSent]               = useState(false);
+  const [emailInfo, setEmailInfo] = useState({ name: '', email: '', phone: '' });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
   useEffect(() => {
     productsApi.getAll(true)
@@ -66,6 +66,16 @@ export default function StorePage() {
           message: `PRODUCT ORDER REQUEST\n\n${cartSummaryText}\n\nTotal: $${total.toFixed(2)}`,
         }),
       });
+
+      await fetch('/api/push/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: '🛒 Nouvelle commande produit !',
+          body: `${emailInfo.name} veut commander ${cart.length} produit(s) — Total: $${total.toFixed(2)}`,
+          url: '/admin',
+        }),
+      }).catch(console.error);
       setSent(true);
     } catch (e) {
       console.error(e);

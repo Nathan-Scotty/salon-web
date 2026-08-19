@@ -17,6 +17,7 @@ import {
 } from '../../lib/api';
 import { isLoggedIn } from '../../lib/api';
 import styles from './stylesheets/Admin.module.css';
+import usePushNotifications from '../../hooks/usePushNotifications';
 
 // ─── Nav config ───────────────────────────────────────────
 const NAV = [
@@ -1138,6 +1139,7 @@ export default function Admin() {
   const [section, setSection] = useState('overview');
   const [collapsed, setCollapsed] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const { supported, subscribed, loading: pushLoading, subscribe, unsubscribe } = usePushNotifications();
 
   useEffect(() => {
     if (!isLoggedIn()) {
@@ -1198,6 +1200,25 @@ export default function Admin() {
       <main className={`${styles.main} ${collapsed ? styles.collapsed : ''}`}>
         <div className={styles.topbar}>
           <h1 className={styles.topbarTitle}>{activeNav?.label}</h1>
+          {supported && (
+            <button
+              onClick={subscribed ? unsubscribe : subscribe}
+              disabled={pushLoading}
+              style={{
+                background: subscribed ? 'rgba(74,222,128,0.1)' : 'var(--gold-glow)',
+                border: `1px solid ${subscribed ? 'var(--green)' : 'rgba(212,175,55,0.3)'}`,
+                color: subscribed ? 'var(--green)' : 'var(--gold)',
+                padding: '0.4rem 0.85rem',
+                borderRadius: 3,
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: 11,
+                letterSpacing: '0.1em',
+                cursor: 'pointer',
+              }}
+            >
+              {pushLoading ? '...' : subscribed ? '🔔 Notifications ON' : '🔕 Enable Notifications'}
+            </button>
+          )}
           <span className={styles.topbarUser}>DHB Davilas Admin</span>
         </div>
         <div className={styles.content}>

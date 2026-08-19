@@ -15,18 +15,18 @@ const STEP_IDS = [
 
 export default function BookingPage() {
   const toast = useToast();
-  const intl  = useIntl();
+  const intl = useIntl();
 
-  const [step, setStep]               = useState(0);
+  const [step, setStep] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const [stylistList, setStylistList] = useState([]);
-  const [slotList, setSlotList]       = useState([]);
-  const [loading, setLoading]         = useState(false);
-  const [submitting, setSubmitting]   = useState(false);
-  const [error, setError]             = useState('');
-  const [success, setSuccess]         = useState(false);
+  const [slotList, setSlotList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
-  const [info, setInfo]       = useState({ name: '', email: '', phone: '' });
+  const [info, setInfo] = useState({ name: '', email: '', phone: '' });
   const [selected, setSelected] = useState({ service: null, stylist: null, slot: null });
 
   useEffect(() => {
@@ -65,32 +65,44 @@ export default function BookingPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name:           info.name,
-          email:          info.email,
-          phone:          info.phone,
-          stylistId:      selected.stylist.id,
+          name: info.name,
+          email: info.email,
+          phone: info.phone,
+          stylistId: selected.stylist.id,
           availabilityId: selected.slot.id,
-          scheduledAt:    selected.slot.date,
-          notes:          'Service: ' + selected.service.name,
+          scheduledAt: selected.slot.date,
+          notes: 'Service: ' + selected.service.name,
         }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Booking failed');
 
-      // Send confirmation email
+      // Email de confirmation au client
       await fetch('/api/email/booking-confirmation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          clientName:  data.data.clientName,
+          clientName: data.data.clientName,
           clientEmail: data.data.clientEmail,
           stylistName: selected.stylist?.user?.name,
           serviceName: selected.service?.name,
-          date:        formatSlotDate(selected.slot),
-          time:        formatTime(selected.slot.startTime) + ' - ' + formatTime(selected.slot.endTime),
+          date: formatSlotDate(selected.slot),
+          time: formatTime(selected.slot.startTime) + ' - ' + formatTime(selected.slot.endTime),
         }),
       });
+
+      // ← AJOUTE CES LIGNES ICI
+      await fetch('/api/push/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: '📅 Nouveau rendez-vous !',
+          body: `${info.name} a réservé avec ${selected.stylist?.user?.name} — ${selected.service?.name}`,
+          url: '/admin',
+        }),
+      }).catch(console.error);
+      // ← FIN DE L'AJOUT
 
       toast.success(intl.formatMessage({ id: 'booking.success.title' }));
       setSuccess(true);
