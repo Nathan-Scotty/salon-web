@@ -5,121 +5,490 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { clientName, clientEmail, stylistName, serviceName, date, time } = req.body;
+  const {
+    clientName,
+    clientEmail,
+    stylistName,
+    serviceName,
+    date,
+    time
+  } = req.body;
 
   if (!clientEmail || !clientName) {
-    return res.status(400).json({ error: 'clientEmail and clientName are required' });
+    return res.status(400).json({
+      error: 'clientEmail and clientName are required'
+    });
   }
 
   try {
     await transporter.sendMail({
-      from: '"DHB Davilas" <davilasbarack@gmail.com>',
+      from: `"DHB Davilas Hair & Beauty" <${process.env.GMAIL_USER}>`,
       to: clientEmail,
-      subject: 'Appointment Confirmed — DHB Davilas Hair & Beauty',
+      subject: 'Your Appointment is Confirmed — DHB Davilas Hair & Beauty',
+
       html: `
-        <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; background: #0f0f0f; color: #f0ece4;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Confirmation</title>
+</head>
 
-          <!-- Header -->
-          <div style="background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%); padding: 2rem 2.5rem; border-bottom: 2px solid #d4af37;">
-            <h1 style="font-size: 28px; color: #d4af37; margin: 0; letter-spacing: 0.05em;">DHB Davilas</h1>
-            <p style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #888; margin: 0.3rem 0 0;">Hair &amp; Beauty</p>
-          </div>
+<body style="
+  margin:0;
+  padding:0;
+  background:#f6f3f0;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#2b2928;
+">
 
-          <!-- Body -->
-          <div style="padding: 2.5rem;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"
+    style="background:#f6f3f0; padding:40px 15px;">
 
-            <!-- EN Greeting -->
-            <h2 style="font-size: 22px; color: #d4af37; margin: 0 0 0.5rem;">✦ Appointment Confirmed</h2>
-            <p style="color: #aaa; font-size: 15px; line-height: 1.7; margin: 0 0 0.25rem;">
-              Hi <strong style="color: #f0ece4;">${clientName}</strong>, your appointment has been booked successfully.
-            </p>
+    <tr>
+      <td align="center">
 
-            <!-- FR Greeting -->
-            <p style="color: #888; font-size: 13px; font-style: italic; margin: 0 0 2rem;">
-              Bonjour <strong style="color: #d4af37;">${clientName}</strong>, votre rendez-vous a été confirmé avec succès.
-            </p>
+        <!-- Main Container -->
+        <table width="600" cellpadding="0" cellspacing="0" border="0"
+          style="
+            max-width:600px;
+            width:100%;
+            background:#ffffff;
+            border-radius:18px;
+            overflow:hidden;
+            box-shadow:0 8px 30px rgba(0,0,0,0.08);
+          ">
 
-            <!-- Appointment Details Card -->
-            <div style="background: #1a1a1a; border-radius: 6px; overflow: hidden; margin-bottom: 2rem; border: 1px solid #2e2e2e;">
+          <!-- HEADER -->
+          <tr>
+            <td align="center"
+              style="
+                background:#2b2928;
+                padding:38px 30px;
+              ">
 
-              <!-- Card Header -->
-              <div style="background: #d4af37; padding: 0.75rem 1.5rem;">
-                <p style="margin: 0; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #0f0f0f; font-weight: bold;">
-                  Appointment Details / Détails du rendez-vous
-                </p>
+              <div style="
+                font-family:Georgia, 'Times New Roman', serif;
+                font-size:32px;
+                font-weight:bold;
+                color:#d8b38a;
+                letter-spacing:2px;
+              ">
+                DHB DAVILAS
               </div>
 
-              <!-- Detail Rows -->
-              <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
-                <tr style="border-bottom: 1px solid #2e2e2e;">
-                  <td style="padding: 1rem 1.5rem; width: 40%;">
-                    <span style="color: #888; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; display: block;">Service</span>
-                  </td>
-                  <td style="padding: 1rem 1.5rem; text-align: right;">
-                    <strong style="color: #f0ece4; font-size: 16px;">${serviceName || '—'}</strong>
-                  </td>
-                </tr>
-                <tr style="border-bottom: 1px solid #2e2e2e;">
-                  <td style="padding: 1rem 1.5rem;">
-                    <span style="color: #888; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; display: block;">Stylist / Styliste</span>
-                  </td>
-                  <td style="padding: 1rem 1.5rem; text-align: right;">
-                    <strong style="color: #f0ece4; font-size: 16px;">${stylistName || '—'}</strong>
-                  </td>
-                </tr>
-                <tr style="border-bottom: 1px solid #2e2e2e;">
-                  <td style="padding: 1rem 1.5rem;">
-                    <span style="color: #888; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; display: block;">Date</span>
-                  </td>
-                  <td style="padding: 1rem 1.5rem; text-align: right;">
-                    <strong style="color: #d4af37; font-size: 16px;">${date || '—'}</strong>
-                  </td>
-                </tr>
+              <div style="
+                margin-top:8px;
+                font-size:11px;
+                letter-spacing:4px;
+                text-transform:uppercase;
+                color:#e7ded6;
+              ">
+                Hair &amp; Beauty
+              </div>
+
+            </td>
+          </tr>
+
+
+          <!-- HERO -->
+          <tr>
+            <td align="center"
+              style="padding:45px 35px 25px;">
+
+              <div style="
+                font-size:13px;
+                color:#c49a6c;
+                letter-spacing:3px;
+                text-transform:uppercase;
+                font-weight:bold;
+                margin-bottom:14px;
+              ">
+                Appointment Confirmed
+              </div>
+
+              <h1 style="
+                margin:0;
+                font-family:Georgia, 'Times New Roman', serif;
+                font-size:30px;
+                line-height:1.3;
+                color:#292625;
+                font-weight:normal;
+              ">
+                You're all booked!
+              </h1>
+
+              <p style="
+                margin:18px 0 0;
+                font-size:15px;
+                line-height:1.7;
+                color:#777;
+              ">
+                Hi <strong style="color:#292625;">
+                  ${clientName}
+                </strong>,<br>
+                your appointment has been successfully confirmed.
+              </p>
+
+              <p style="
+                margin:8px 0 0;
+                font-size:13px;
+                color:#a19b96;
+                font-style:italic;
+              ">
+                Bonjour ${clientName}, votre rendez-vous est confirmé.
+              </p>
+
+            </td>
+          </tr>
+
+
+          <!-- APPOINTMENT CARD -->
+          <tr>
+            <td style="padding:10px 35px 30px;">
+
+              <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                style="
+                  background:#faf8f6;
+                  border:1px solid #eee8e2;
+                  border-radius:12px;
+                  overflow:hidden;
+                ">
+
+                <!-- CARD TITLE -->
                 <tr>
-                  <td style="padding: 1rem 1.5rem;">
-                    <span style="color: #888; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; display: block;">Time / Heure</span>
-                  </td>
-                  <td style="padding: 1rem 1.5rem; text-align: right;">
-                    <strong style="color: #d4af37; font-size: 16px;">${time || '—'}</strong>
+                  <td colspan="2"
+                    style="
+                      padding:18px 22px;
+                      background:#f1e7de;
+                      border-bottom:1px solid #e6ddd5;
+                    ">
+
+                    <div style="
+                      font-size:11px;
+                      font-weight:bold;
+                      letter-spacing:2px;
+                      text-transform:uppercase;
+                      color:#8b6849;
+                    ">
+                      Your Appointment
+                    </div>
+
+                    <div style="
+                      margin-top:4px;
+                      font-size:12px;
+                      color:#9b9189;
+                    ">
+                      Détails du rendez-vous
+                    </div>
+
                   </td>
                 </tr>
+
+
+                <!-- SERVICE -->
+                <tr>
+                  <td style="
+                    padding:18px 22px;
+                    border-bottom:1px solid #eee8e2;
+                    width:40%;
+                  ">
+                    <div style="
+                      font-size:10px;
+                      text-transform:uppercase;
+                      letter-spacing:1.5px;
+                      color:#a49b94;
+                    ">
+                      Service
+                    </div>
+
+                    <div style="
+                      margin-top:5px;
+                      font-size:14px;
+                      color:#777;
+                    ">
+                      Service
+                    </div>
+                  </td>
+
+                  <td align="right"
+                    style="
+                      padding:18px 22px;
+                      border-bottom:1px solid #eee8e2;
+                    ">
+
+                    <strong style="
+                      font-size:15px;
+                      color:#292625;
+                    ">
+                      ${serviceName || '—'}
+                    </strong>
+
+                  </td>
+                </tr>
+
+
+                <!-- STYLIST -->
+                <tr>
+                  <td style="
+                    padding:18px 22px;
+                    border-bottom:1px solid #eee8e2;
+                  ">
+
+                    <div style="
+                      font-size:10px;
+                      text-transform:uppercase;
+                      letter-spacing:1.5px;
+                      color:#a49b94;
+                    ">
+                      Stylist
+                    </div>
+
+                    <div style="
+                      margin-top:5px;
+                      font-size:14px;
+                      color:#777;
+                    ">
+                      Styliste
+                    </div>
+
+                  </td>
+
+                  <td align="right"
+                    style="
+                      padding:18px 22px;
+                      border-bottom:1px solid #eee8e2;
+                    ">
+
+                    <strong style="
+                      font-size:15px;
+                      color:#292625;
+                    ">
+                      ${stylistName || '—'}
+                    </strong>
+
+                  </td>
+                </tr>
+
+
+                <!-- DATE -->
+                <tr>
+                  <td style="
+                    padding:18px 22px;
+                    border-bottom:1px solid #eee8e2;
+                  ">
+
+                    <div style="
+                      font-size:10px;
+                      text-transform:uppercase;
+                      letter-spacing:1.5px;
+                      color:#a49b94;
+                    ">
+                      Date
+                    </div>
+
+                    <div style="
+                      margin-top:5px;
+                      font-size:14px;
+                      color:#777;
+                    ">
+                      Date
+                    </div>
+
+                  </td>
+
+                  <td align="right"
+                    style="
+                      padding:18px 22px;
+                      border-bottom:1px solid #eee8e2;
+                    ">
+
+                    <strong style="
+                      font-size:15px;
+                      color:#8b6849;
+                    ">
+                      ${date || '—'}
+                    </strong>
+
+                  </td>
+                </tr>
+
+
+                <!-- TIME -->
+                <tr>
+                  <td style="padding:18px 22px;">
+
+                    <div style="
+                      font-size:10px;
+                      text-transform:uppercase;
+                      letter-spacing:1.5px;
+                      color:#a49b94;
+                    ">
+                      Time
+                    </div>
+
+                    <div style="
+                      margin-top:5px;
+                      font-size:14px;
+                      color:#777;
+                    ">
+                      Heure
+                    </div>
+
+                  </td>
+
+                  <td align="right"
+                    style="padding:18px 22px;">
+
+                    <strong style="
+                      font-size:15px;
+                      color:#8b6849;
+                    ">
+                      ${time || '—'}
+                    </strong>
+
+                  </td>
+                </tr>
+
               </table>
-            </div>
 
-            <!-- EN note -->
-            <p style="color: #888; font-size: 14px; line-height: 1.7; margin: 0 0 0.5rem;">
-              We look forward to seeing you. If you need to make any changes or cancel, please contact us as soon as possible.
-            </p>
+            </td>
+          </tr>
 
-            <!-- FR note -->
-            <p style="color: #666; font-size: 13px; font-style: italic; line-height: 1.7; margin: 0 0 2rem;">
-              Nous avons hâte de vous accueillir. Si vous devez modifier ou annuler, veuillez nous contacter dès que possible.
-            </p>
 
-            <!-- CTA Button -->
-            <div style="text-align: center; margin: 2rem 0;">
-              <a href="https://dhbdavilashairbeauty.vercel.app/contact"
-                style="display: inline-block; background: #d4af37; color: #0f0f0f; padding: 0.85rem 2.5rem; font-size: 12px; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; border-radius: 3px;">
-                Contact Us / Nous contacter
+          <!-- MESSAGE -->
+          <tr>
+            <td align="center"
+              style="padding:5px 40px 35px;">
+
+              <p style="
+                margin:0;
+                font-family:Georgia, 'Times New Roman', serif;
+                font-size:17px;
+                line-height:1.6;
+                color:#4b4744;
+              ">
+                We look forward to welcoming you.
+              </p>
+
+              <p style="
+                margin:8px 0 0;
+                font-size:13px;
+                line-height:1.7;
+                color:#999;
+              ">
+                Nous avons hâte de vous accueillir.
+              </p>
+
+              <p style="
+                margin:18px 0 0;
+                font-size:12px;
+                line-height:1.6;
+                color:#aaa;
+              ">
+                Need to make a change or cancel your appointment?<br>
+                Please contact us as soon as possible.
+              </p>
+
+            </td>
+          </tr>
+
+
+          <!-- CTA -->
+          <tr>
+            <td align="center"
+              style="padding:0 35px 45px;">
+
+              <a
+                href="https://dhbdavilashairbeauty.vercel.app/contact"
+                style="
+                  display:inline-block;
+                  background:#2b2928;
+                  color:#ffffff;
+                  text-decoration:none;
+                  padding:15px 32px;
+                  border-radius:30px;
+                  font-size:11px;
+                  font-weight:bold;
+                  letter-spacing:2px;
+                  text-transform:uppercase;
+                "
+              >
+                Contact Us
               </a>
-            </div>
 
-          </div>
+              <div style="
+                margin-top:10px;
+                font-size:11px;
+                color:#aaa;
+              ">
+                Nous contacter
+              </div>
 
-          <!-- Footer -->
-          <div style="background: #1a1a1a; border-top: 1px solid #2e2e2e; padding: 1.5rem 2.5rem; text-align: center;">
-            <p style="font-size: 13px; color: #d4af37; margin: 0 0 0.5rem; letter-spacing: 0.1em;">DHB Davilas Hair &amp; Beauty</p>
-            <p style="font-size: 12px; color: #666; margin: 0;">davilasbarack@gmail.com &nbsp;·&nbsp; +1 613 710 07-54</p>
-            <p style="font-size: 11px; color: #444; margin: 0.75rem 0 0;">Gatineau-Ottawa, Canada</p>
-          </div>
+            </td>
+          </tr>
 
-        </div>
+
+          <!-- FOOTER -->
+          <tr>
+            <td align="center"
+              style="
+                background:#f7f4f1;
+                padding:28px 25px;
+                border-top:1px solid #eee8e2;
+              ">
+
+              <div style="
+                font-family:Georgia, 'Times New Roman', serif;
+                font-size:17px;
+                color:#8b6849;
+                margin-bottom:8px;
+              ">
+                DHB Davilas Hair &amp; Beauty
+              </div>
+
+              <div style="
+                font-size:12px;
+                color:#888;
+                line-height:1.8;
+              ">
+                davilasbarack@gmail.com<br>
+                +1 613 710 07-54
+              </div>
+
+              <div style="
+                margin-top:12px;
+                font-size:11px;
+                color:#aaa;
+              ">
+                Gatineau – Ottawa, Canada
+              </div>
+
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+
+  </table>
+
+</body>
+</html>
       `,
     });
 
-    return res.status(200).json({ message: 'Booking confirmation email sent' });
+    return res.status(200).json({
+      message: 'Booking confirmation email sent'
+    });
+
   } catch (error) {
     console.error('Email error:', error);
-    return res.status(500).json({ error: 'Failed to send email' });
+
+    return res.status(500).json({
+      error: 'Failed to send email'
+    });
   }
 }
