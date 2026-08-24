@@ -34,7 +34,14 @@ const NAV = [
 ];
 
 // ─── Helpers ──────────────────────────────────────────────
-const fmt = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+const fmtDate = (d) => {
+  if (!d) return '—';
+  const date = new Date(d);
+  return date.toLocaleDateString('en-US', { 
+    timeZone: 'UTC',  // ← clé
+    month: 'short', day: 'numeric', year: 'numeric' 
+  });
+};
 const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '—';
 
 function StatusBadge({ status }) {
@@ -125,7 +132,7 @@ function Overview() {
                 <tr key={a.id}>
                   <td>{a.client?.user?.name || '—'}</td>
                   <td>{a.stylist?.user?.name || '—'}</td>
-                  <td>{fmt(a.scheduledAt)}</td>
+                  <td>{fmtDate(a.scheduledAt)}</td>
                   <td><StatusBadge status={a.status} /></td>
                 </tr>
               ))}
@@ -204,7 +211,7 @@ function Appointments() {
                   <tr key={a.id}>
                     <td>{a.client?.user?.name || '—'}</td>
                     <td>{a.stylist?.user?.name || '—'}</td>
-                    <td>{fmt(a.scheduledAt)} {fmtTime(a.scheduledAt)}</td>
+                    <td>{fmtDate(a.scheduledAt)} {fmtTime(a.scheduledAt)}</td>
                     <td>{a.services?.map(s => s.service?.name).join(', ') || '—'}</td>
                     <td>
                       <select
@@ -290,7 +297,7 @@ function Availability() {
                 {list.map(s => (
                   <tr key={s.id}>
                     <td>{s.stylist?.user?.name || '—'}</td>
-                    <td>{fmt(s.date)}</td>
+                    <td>{fmtDate(s.date)}</td>
                     <td>{fmtTime(s.startTime)}</td>
                     <td>{fmtTime(s.endTime)}</td>
                     <td><span className={`${styles.badge} ${s.isBooked ? styles.confirmed : styles.pending}`}>{s.isBooked ? 'Booked' : 'Open'}</span></td>
@@ -515,7 +522,7 @@ function Clients() {
                     <td>{c.user?.email || '—'}</td>
                     <td>{c.user?.phone || '—'}</td>
                     <td>{c.notes || '—'}</td>
-                    <td>{fmt(c.createdAt)}</td>
+                    <td>{fmtDate(c.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -557,7 +564,7 @@ function Payments() {
                     <td>${Number(p.amount).toFixed(2)}</td>
                     <td>{p.method}</td>
                     <td><StatusBadge status={p.status} /></td>
-                    <td>{p.paidAt ? fmt(p.paidAt) : '—'}</td>
+                    <td>{p.paidAt ? fmtDate(p.paidAt) : '—'}</td>
                   </tr>
                 ))}
               </tbody>

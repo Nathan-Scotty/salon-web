@@ -46,7 +46,10 @@ export default function BookingPage() {
   }, [step, selected.stylist]);
 
   const formatSlotDate = (slot) =>
-    new Date(slot.date).toLocaleDateString(intl.locale, { weekday: 'short', month: 'short', day: 'numeric' });
+    new Date(slot.date).toLocaleDateString(intl.locale, {
+      timeZone: 'UTC',
+      weekday: 'short', month: 'short', day: 'numeric'
+    });
 
   const formatTime = (timeStr) =>
     new Date(timeStr).toLocaleTimeString(intl.locale, { hour: '2-digit', minute: '2-digit' });
