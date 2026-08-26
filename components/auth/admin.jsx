@@ -37,9 +37,9 @@ const NAV = [
 const fmtDate = (d) => {
   if (!d) return '—';
   const date = new Date(d);
-  return date.toLocaleDateString('en-US', { 
+  return date.toLocaleDateString('en-US', {
     timeZone: 'UTC',  // ← clé
-    month: 'short', day: 'numeric', year: 'numeric' 
+    month: 'short', day: 'numeric', year: 'numeric'
   });
 };
 const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '—';

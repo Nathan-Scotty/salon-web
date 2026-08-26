@@ -52,7 +52,7 @@ export default function BookingPage() {
     });
 
   const formatTime = (timeStr) =>
-    new Date(timeStr).toLocaleTimeString(intl.locale, { hour: '2-digit', minute: '2-digit' });
+    new Date(timeStr).toLocaleTimeString(intl.locale, {timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
 
   const handleInfoSubmit = (e) => {
     e.preventDefault();
