@@ -269,8 +269,8 @@ function Availability() {
 
       const adjustTime = (timeStr) => {
         const [h, m] = timeStr.split(':').map(Number);
-        // Convert local time to UTC by adding the offset
-        const totalMinutes = h * 60 + m + tzOffset;
+        // Convert local time to UTC by subtracting the offset
+        const totalMinutes = h * 60 + m - tzOffset;
         const utcH = Math.floor(((totalMinutes % 1440) + 1440) % 1440 / 60);
         const utcM = ((totalMinutes % 1440) + 1440) % 1440 % 60;
         return `${String(utcH).padStart(2, '0')}:${String(utcM).padStart(2, '0')}`;
