@@ -38,11 +38,11 @@ const fmtDate = (d) => {
   if (!d) return '—';
   const date = new Date(d);
   return date.toLocaleDateString('en-US', {
-    timeZone: 'UTC',  // ← clé
+    timeZone: 'UTC',
     month: 'short', day: 'numeric', year: 'numeric'
   });
 };
-const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '—';
+const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' }) : '—';
 
 function StatusBadge({ status }) {
   return <span className={`${styles.badge} ${styles[status?.toLowerCase()]}`}>{status}</span>;
@@ -174,7 +174,7 @@ function Appointments() {
               stylistName: appointment.stylist?.user?.name,
               serviceName: appointment.services?.[0]?.service?.name,
               date: new Date(appointment.scheduledAt).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
-              time: new Date(appointment.scheduledAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+              time: new Date(appointment.scheduledAt).toLocaleTimeString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' }),
               status,
             }),
           });
@@ -264,11 +264,22 @@ function Availability() {
   const handleSave = async () => {
     setSaving(true); setError('');
     try {
-      await availApi.create({ ...form, stylistId: Number(form.stylistId) });
-      setShowModal(false);
-      setForm({ stylistId: '', date: '', startTime: '', endTime: '' });
-      load();
-      toast.success('Availability slot added.');
+      // Convert local time to UTC before sending
+      const toUTC = (timeStr) => {
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        const d = new Date();
+        d.setHours(hours, minutes, 0, 0);
+        return `${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+      };
+
+      const payload = {
+        ...form,
+        stylistId: Number(form.stylistId),
+        startTime: toUTC(form.startTime),
+        endTime: toUTC(form.endTime),
+      };
+
+      await availApi.create(payload);
     } catch (e) { setError(e.message); toast.error('Failed to add slot.'); } finally { setSaving(false); }
   };
 
