@@ -264,22 +264,30 @@ function Availability() {
   const handleSave = async () => {
     setSaving(true); setError('');
     try {
-      // Convert local time to UTC before sending
-      const toUTC = (timeStr) => {
-        const [hours, minutes] = timeStr.split(':').map(Number);
-        const d = new Date();
-        d.setHours(hours, minutes, 0, 0);
-        return `${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+      // Get local timezone offset in minutes (e.g. EDT = -240)
+      const tzOffset = new Date().getTimezoneOffset();
+
+      const adjustTime = (timeStr) => {
+        const [h, m] = timeStr.split(':').map(Number);
+        // Convert local time to UTC by adding the offset
+        const totalMinutes = h * 60 + m + tzOffset;
+        const utcH = Math.floor(((totalMinutes % 1440) + 1440) % 1440 / 60);
+        const utcM = ((totalMinutes % 1440) + 1440) % 1440 % 60;
+        return `${String(utcH).padStart(2, '0')}:${String(utcM).padStart(2, '0')}`;
       };
 
       const payload = {
         ...form,
         stylistId: Number(form.stylistId),
-        startTime: toUTC(form.startTime),
-        endTime: toUTC(form.endTime),
+        startTime: adjustTime(form.startTime),
+        endTime: adjustTime(form.endTime),
       };
 
       await availApi.create(payload);
+      setShowModal(false);
+      setForm({ stylistId: '', date: '', startTime: '', endTime: '' });
+      load();
+      toast.success('Availability slot added.');
     } catch (e) { setError(e.message); toast.error('Failed to add slot.'); } finally { setSaving(false); }
   };
 
