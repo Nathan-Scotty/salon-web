@@ -42,7 +42,11 @@ const fmtDate = (d) => {
     month: 'short', day: 'numeric', year: 'numeric'
   });
 };
-const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' }) : '—';
+
+const fmtTime = (d) => d ? new Date(d).toLocaleTimeString('en-US', {
+  timeZone: 'UTC',
+  hour: '2-digit', minute: '2-digit'
+}) : '—';
 
 function StatusBadge({ status }) {
   return <span className={`${styles.badge} ${styles[status?.toLowerCase()]}`}>{status}</span>;
@@ -264,26 +268,7 @@ function Availability() {
   const handleSave = async () => {
     setSaving(true); setError('');
     try {
-      // Get local timezone offset in minutes (e.g. EDT = -240)
-      const tzOffset = new Date().getTimezoneOffset();
-
-      const adjustTime = (timeStr) => {
-        const [h, m] = timeStr.split(':').map(Number);
-        // Convert local time to UTC by subtracting the offset
-        const totalMinutes = h * 60 + m - tzOffset;
-        const utcH = Math.floor(((totalMinutes % 1440) + 1440) % 1440 / 60);
-        const utcM = ((totalMinutes % 1440) + 1440) % 1440 % 60;
-        return `${String(utcH).padStart(2, '0')}:${String(utcM).padStart(2, '0')}`;
-      };
-
-      const payload = {
-        ...form,
-        stylistId: Number(form.stylistId),
-        startTime: adjustTime(form.startTime),
-        endTime: adjustTime(form.endTime),
-      };
-
-      await availApi.create(payload);
+      await availApi.create({ ...form, stylistId: Number(form.stylistId) });
       setShowModal(false);
       setForm({ stylistId: '', date: '', startTime: '', endTime: '' });
       load();
